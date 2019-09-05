@@ -19,8 +19,8 @@ class App extends Component  {
     },
     newTaskModal: false,
     editTaskModal: false,
+
   }
-  // ściąga dane API
   componentDidMount() {
     this._refreshTasks();
   }
@@ -78,14 +78,28 @@ class App extends Component  {
     })
   }
   render() { 
-    // let tasksTodo = this.state.tasks.filter((task) => {
-    //   return task.completed === false;
-    // });
-    // let tasksDone = this.state.tasks.filter((task) => {
-    //   return task.completed === true;
-    // });
 
-    let tasks = this.state.tasks.map((task) => {
+    let tasksTodo = this.state.tasks.filter((value) => {
+      return value.completed === false;
+    }).map((task) => {
+      return (
+        <tr key={task.id}>
+          <td>{task.id}</td>
+          <td>{task.name}</td>
+          <td>
+            {this.isCompleted(task.completed)}
+          </td>
+          <td>
+            <Button color="success" size="sm" className="mr-2" onClick={this.editTask.bind(this, task.id, task.name, task.completed, task.created_at)}>Edit</Button>
+            <Button color="danger" size="sm" onClick={this.deleteTask.bind(this, task.id)}>Delete</Button>
+          </td>
+          <td>{moment(task.created_at).calendar()}</td>
+        </tr>
+      )
+    });
+    let tasksDone = this.state.tasks.filter((value) => {
+      return value.completed === true;
+    }).map((task) => {
       return (
         <tr key={task.id}>
           <td>{task.id}</td>
@@ -169,7 +183,9 @@ class App extends Component  {
           </thead>
 
           <tbody>
-            {tasks}
+            {tasksTodo}
+            <td colspan="5"><span className="font-weight-bold">History of completed tasks:</span></td>
+            {tasksDone}
           </tbody>
         </Table>
         
