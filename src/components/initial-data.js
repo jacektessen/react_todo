@@ -14,7 +14,7 @@ const initialData = {
     },
     column2: {
       id: "column2",
-      title: "Niższy priorytet",
+      title: "Normalny priorytet",
       taskIds: []
     },
     column3: {

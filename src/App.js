@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "./components/home";
 import Dashboard from "./components/dashboard";
 import TaskDetails from "./components/common/taskDetails";
+import TaskForm from "./components/taskForm";
 import NotFound from "./components/common/notFound";
 
 class App extends Component {
@@ -10,6 +11,7 @@ class App extends Component {
     return (
       <React.Fragment>
         <Switch>
+          <Route path="/tasks/add" exact component={TaskForm} />
           <Route path="/tasks/:code" component={TaskDetails} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/dashboard" exact component={Dashboard} />

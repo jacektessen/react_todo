@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
-import initialData from "./initial-data";
 import Column from "./column";
-import axios from "axios";
+import { Link } from "react-router-dom";
+import { getTasksAPI, handleTasksChange } from ".././redux/tasks";
+import { connect } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -11,28 +12,8 @@ const Container = styled.div`
 `;
 
 class Dashboard extends Component {
-  state = initialData;
-
-  async componentDidMount() {
-    const { data } = await axios.get("http://localhost:8000/api/v2/tasks/");
-    const tasks = data.data.tasks;
-    tasks.map(task => (task.id = String(task.id)));
-
-    const { columns, columnOrder } = this.state;
-    const newColumns = { ...columns };
-    columnOrder.map(column =>
-      newColumns[column].taskIds.push(
-        ...tasks.map(task => (task.column === column ? String(task.id) : null))
-      )
-    );
-
-    columnOrder.map(column => {
-      newColumns[column].taskIds = newColumns[column].taskIds.filter(
-        taskId => taskId !== null
-      );
-    });
-
-    this.setState({ tasks });
+  componentDidMount() {
+    this.props.getTasksAPI();
   }
 
   onDragEnd = result => {
@@ -48,8 +29,8 @@ class Dashboard extends Component {
       return;
     }
 
-    const start = this.state.columns[source.droppableId];
-    const finish = this.state.columns[destination.droppableId];
+    const start = this.props.tasks.columns[source.droppableId];
+    const finish = this.props.tasks.columns[destination.droppableId];
 
     if (start === finish) {
       const newTaskIds = Array.from(start.taskIds);
@@ -62,15 +43,15 @@ class Dashboard extends Component {
       };
 
       const newState = {
-        ...this.state,
+        ...this.props.tasks,
         columns: {
-          ...this.state.columns,
+          ...this.props.tasks.columns,
           [newColumn.id]: newColumn
         }
       };
       console.log("New State jedna kolumna", newState);
 
-      this.setState(newState);
+      this.props.handleTasksChange(newState);
       return;
     }
 
@@ -90,34 +71,50 @@ class Dashboard extends Component {
     };
 
     const newState = {
-      ...this.state,
+      ...this.props.tasks,
       columns: {
-        ...this.state.columns,
+        ...this.props.tasks.columns,
         [newStart.id]: newStart,
         [newFinish.id]: newFinish
       }
     };
 
-    this.setState(newState);
+    this.props.handleTasksChange(newState);
   };
 
+  // handleAddTask = () => {
+  //   const tasks = { ...this.state.tasks };
+  //   tasks.push();
+  // };
+
   render() {
+    if (!this.props.tasks.loaded && !this.props.tasks.loading)
+      return <h1>Starting...........</h1>;
+    if (this.props.tasks.loading) return <h1>Loading.................</h1>;
+    if (this.props.tasks.error)
+      return (
+        <h1>............{this.props.tasks.error.message}..............</h1>
+      );
+    const { columns } = this.props.tasks.columns;
     return (
       <React.Fragment>
         <div className="row">
           <div className="col-2">
             <h2>TODO</h2>
+            <Link to={{ pathname: "/tasks/add", state: { columns } }}>
+              <i className="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
+            </Link>
           </div>
           <div className="col-8">
             <DragDropContext onDragEnd={this.onDragEnd}>
               <Container>
-                {this.state.columnOrder.map(columnId => {
-                  const column = this.state.columns[columnId];
+                {this.props.tasks.columnOrder.map(columnId => {
+                  const column = this.props.tasks.columns[columnId];
                   const tasks = column.taskIds.map(taskId => {
-                    const index = this.state.tasks
+                    const index = this.props.tasks.tasks
                       .map(task => task.id)
                       .indexOf(taskId);
-                    return this.state.tasks[index];
+                    return this.props.tasks.tasks[index];
                   });
                   return (
                     <Column key={column.id} column={column} tasks={tasks} />
@@ -135,4 +132,13 @@ class Dashboard extends Component {
   }
 }
 
-export default Dashboard;
+const mapStateToProps = state => {
+  console.log("state na dole", state);
+  return {
+    tasks: state.tasks
+  };
+};
+
+export default connect(mapStateToProps, { getTasksAPI, handleTasksChange })(
+  Dashboard
+);
