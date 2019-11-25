@@ -13,7 +13,8 @@ const Container = styled.div`
 
 class Dashboard extends Component {
   componentDidMount() {
-    this.props.getTasksAPI();
+    if (!this.props.tasks.tasks[0])
+      this.props.getTasksAPI();
   }
 
   onDragEnd = result => {
@@ -88,6 +89,7 @@ class Dashboard extends Component {
   // };
 
   render() {
+    console.log("props in render", this.props);
     if (!this.props.tasks.loaded && !this.props.tasks.loading)
       return <h1>Starting...........</h1>;
     if (this.props.tasks.loading) return <h1>Loading.................</h1>;
@@ -95,7 +97,8 @@ class Dashboard extends Component {
       return (
         <h1>............{this.props.tasks.error.message}..............</h1>
       );
-    const { columns } = this.props.tasks.columns;
+    const { columns } = this.props.tasks;
+    console.log("columns", columns);
     return (
       <React.Fragment>
         <div className="row">

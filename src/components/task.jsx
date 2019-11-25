@@ -21,7 +21,7 @@ class Task extends Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
           >
-            {this.props.task.content}
+            {this.props.task.content} id: {this.props.task.id}
           </Container>
         )}
       </Draggable>

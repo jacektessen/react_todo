@@ -1,9 +1,9 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
-import getTasksAPIReducer from "./tasks";
+import tasksReducer from "./tasks";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
-  tasks: getTasksAPIReducer
+  tasks: tasksReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

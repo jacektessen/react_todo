@@ -43,7 +43,7 @@ const TaskList = styled.div`
 
 export default class Column extends React.Component {
   render() {
-    // console.log("Column", this.props.tasks);
+    console.log("Column", this.props);
     return (
       <ThemeProvider theme={theme}>
         <Container column={this.props.column.id}>

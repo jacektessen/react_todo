@@ -7,7 +7,6 @@ export function getTasksAPI() {
       .get("http://localhost:8000/api/v2/tasks/")
       .then(res => {
         const tasks = res.data.data.tasks;
-        console.log("Tasks from res", res);
         tasks.map(task => (task.id = String(task.id)));
         dispatch({ type: "GET_TASKS_API_SUCCESS", payload: tasks });
       })
@@ -24,9 +23,28 @@ export function handleTasksChange(newData) {
   };
 }
 
+export function handleAddTask(task) {
+  return dispatch => {
+    dispatch({ type: "NEW_TASK_LOAD" });
+    axios
+      .post("http://localhost:8000/api/v1/tasks/", task)
+      .then(res =>
+        dispatch({
+          type: "POST_TASK_SUCCESS",
+          payload: res.data
+        })
+      )
+      .catch(error => {
+        dispatch({ type: "POST_TASK_FAILURE", payload: error });
+      });
+  };
+}
+
+export function handleDeleteTask(task) {}
+
 // prettier-ignore
 const initState = {
-  tasks: {},
+  tasks: [],
   loading: false,
   loaded: false,
   error: null,
@@ -39,37 +57,43 @@ const initState = {
   columnOrder: ["column1", "column2", "column3", "column4"]
 };
 
-export default function getTasksAPIReducer(state = initState, action) {
+function getColumnsFromTasks(tasks) {
+  const { columns, columnOrder } = {...initState};
+  Object.keys(columns).map(key => columns[key].taskIds = []);
+  columnOrder.map(column =>
+    columns[column].taskIds.push(
+      ...tasks.map(task =>
+        task.column === column ? String(task.id) : null
+      )
+    )
+  );
+
+  columnOrder.map(column => {
+    columns[column].taskIds = columns[column].taskIds.filter(
+      taskId => taskId !== null
+    );
+  });
+  return columns;
+}
+
+export default function tasksReducer(state = initState, action) {
   switch (action.type) {
     case "GET_TASKS_API_LOAD":
       return {
         ...state,
         loading: true
       };
-    case "GET_TASKS_API_SUCCESS":
-      const { columns, columnOrder } = { ...state };
+    case "GET_TASKS_API_SUCCESS":{
       const tasks = action.payload;
-      columnOrder.map(column =>
-        columns[column].taskIds.push(
-          ...tasks.map(task =>
-            task.column === column ? String(task.id) : null
-          )
-        )
-      );
-
-      columnOrder.map(column => {
-        columns[column].taskIds = columns[column].taskIds.filter(
-          taskId => taskId !== null
-        );
-      });
+      const columns = getColumnsFromTasks(tasks);
       return {
         ...state,
         columns,
-        tasks: action.payload,
+        tasks,
         loading: false,
         loaded: true,
         error: null
-      };
+      }};
     case "GET_TASKS_API_FAILURE":
       return {
         ...state,
@@ -79,6 +103,34 @@ export default function getTasksAPIReducer(state = initState, action) {
       };
     case "HANDLE_TASKS_CHANGE":
       return (state = action.payload);
+    case "NEW_TASK_LOAD":
+      return {
+        ...state,
+        loading: true,
+        loaded: false
+      };
+    case "POST_TASK_SUCCESS":{
+      const tasks = [...state.tasks];
+      const task = {
+        ...action.payload,
+        id: String(action.payload.id)
+      }
+      tasks.push(task);
+      const columns = getColumnsFromTasks(tasks);
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        columns,
+        tasks
+      }};
+    case "POST_TASK_FAILURE":
+      return {
+        ...state,
+        loading: false,
+        loaded: true,
+        error: action.payload
+      };
     default:
       return state;
   }

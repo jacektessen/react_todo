@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Home from "./components/home";
 import Dashboard from "./components/dashboard";
-import TaskDetails from "./components/common/taskDetails";
+import TaskDetails from "./components/taskDetails";
 import TaskForm from "./components/taskForm";
 import NotFound from "./components/common/notFound";
 

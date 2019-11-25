@@ -1,6 +1,8 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import { connect } from "react-redux";
+import { handleAddTask } from ".././redux/tasks";
 
 class TaskForm extends Form {
   state = {
@@ -26,10 +28,14 @@ class TaskForm extends Form {
 
   doSubmit = () => {
     console.log("Submitted");
+    console.log("data to POST", this.state.data);
+    this.props.handleAddTask(this.state.data);
+    this.props.history.push("/dashboard");
   };
   // prettier-ignore
   render() {
     console.log("Props in form", this.props);
+    console.log("state in form", this.state);
     return (
       <div>
         <h1>Task Form</h1>
@@ -44,4 +50,4 @@ class TaskForm extends Form {
   }
 }
 
-export default TaskForm;
+export default connect(null, { handleAddTask })(TaskForm);

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Input = ({ type, name, label, error, ...rest }) => {
-  console.log("rest", { ...rest });
+  // console.log("rest", { ...rest });
   if (type === "textarea") {
     return (
       <div className="form-group">
