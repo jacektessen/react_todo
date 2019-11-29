@@ -13,8 +13,7 @@ const Container = styled.div`
 
 class Dashboard extends Component {
   componentDidMount() {
-    if (!this.props.tasks.tasks[0])
-      this.props.getTasksAPI();
+    if (!this.props.tasks.tasks[0]) this.props.getTasksAPI();
   }
 
   onDragEnd = result => {
@@ -50,7 +49,6 @@ class Dashboard extends Component {
           [newColumn.id]: newColumn
         }
       };
-      console.log("New State jedna kolumna", newState);
 
       this.props.handleTasksChange(newState);
       return;
@@ -89,45 +87,47 @@ class Dashboard extends Component {
   // };
 
   render() {
-    console.log("props in render", this.props);
     if (!this.props.tasks.loaded && !this.props.tasks.loading)
       return <h1>Starting...........</h1>;
     if (this.props.tasks.loading) return <h1>Loading.................</h1>;
     if (this.props.tasks.error)
       return (
-        <h1>............{this.props.tasks.error.message}..............</h1>
+        <div>
+          <h1>............{this.props.tasks.error.message}..............</h1>
+        </div>
       );
     const { columns } = this.props.tasks;
-    console.log("columns", columns);
     return (
       <React.Fragment>
-        <div className="row">
-          <div className="col-2">
-            <h2>TODO</h2>
-            <Link to={{ pathname: "/tasks/add", state: { columns } }}>
-              <i className="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
-            </Link>
-          </div>
-          <div className="col-8">
-            <DragDropContext onDragEnd={this.onDragEnd}>
-              <Container>
-                {this.props.tasks.columnOrder.map(columnId => {
-                  const column = this.props.tasks.columns[columnId];
-                  const tasks = column.taskIds.map(taskId => {
-                    const index = this.props.tasks.tasks
-                      .map(task => task.id)
-                      .indexOf(taskId);
-                    return this.props.tasks.tasks[index];
-                  });
-                  return (
-                    <Column key={column.id} column={column} tasks={tasks} />
-                  );
-                })}
-              </Container>
-            </DragDropContext>
-          </div>
-          <div className="col-2">
-            <h2>TODO</h2>
+        <div className="dashboard_whole">
+          <div className="row">
+            <div className="col-1">
+              <h2>TODO</h2>
+              <Link to={{ pathname: "/tasks/add", state: { columns } }}>
+                <i className="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
+              </Link>
+            </div>
+            <div className="col-10">
+              <DragDropContext onDragEnd={this.onDragEnd}>
+                <Container>
+                  {this.props.tasks.columnOrder.map(columnId => {
+                    const column = this.props.tasks.columns[columnId];
+                    const tasks = column.taskIds.map(taskId => {
+                      const index = this.props.tasks.tasks
+                        .map(task => task.id)
+                        .indexOf(taskId);
+                      return this.props.tasks.tasks[index];
+                    });
+                    return (
+                      <Column key={column.id} column={column} tasks={tasks} />
+                    );
+                  })}
+                </Container>
+              </DragDropContext>
+            </div>
+            <div className="col-1">
+              <h2>TODO</h2>
+            </div>
           </div>
         </div>
       </React.Fragment>
@@ -136,7 +136,6 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log("state na dole", state);
   return {
     tasks: state.tasks
   };

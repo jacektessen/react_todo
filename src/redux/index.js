@@ -7,7 +7,6 @@ const rootReducer = combineReducers({
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
-console.log("store przed subscribe", store);
 store.subscribe(() => {
   console.log("store", store.getState());
 });

@@ -27,15 +27,11 @@ class TaskForm extends Form {
   };
 
   doSubmit = () => {
-    console.log("Submitted");
-    console.log("data to POST", this.state.data);
     this.props.handleAddTask(this.state.data);
     this.props.history.push("/dashboard");
   };
   // prettier-ignore
   render() {
-    console.log("Props in form", this.props);
-    console.log("state in form", this.state);
     return (
       <div>
         <h1>Task Form</h1>

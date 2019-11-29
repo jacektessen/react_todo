@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import { handleDeleteTask } from ".././redux/tasks";
+import { connect } from "react-redux";
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -8,9 +10,14 @@ const Container = styled.div`
   padding: 8px;
   margin-bottom: 8px;
   background-color: white;
+  position: flex;
 `;
 
 class Task extends Component {
+  handleClick = () => {
+    console.log("delete jest kliknięty", this.props.task.id);
+    this.props.handleDeleteTask(this.props.task.id);
+  };
   render() {
     // console.log("Props w task", this.props);
     return (
@@ -22,6 +29,11 @@ class Task extends Component {
             ref={provided.innerRef}
           >
             {this.props.task.content} id: {this.props.task.id}
+            <i
+              onClick={this.handleClick}
+              className="fa fa-trash-o fa-lg"
+              aria-hidden="true"
+            ></i>
           </Container>
         )}
       </Draggable>
@@ -29,4 +41,4 @@ class Task extends Component {
   }
 }
 
-export default Task;
+export default connect(null, { handleDeleteTask })(Task);

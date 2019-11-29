@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.fa-trash-o {
+  color: red;
+  cursor: pointer;
+  float: right;
+}
+
+.dashboard_whole {
+  min-width: 950px;
+}

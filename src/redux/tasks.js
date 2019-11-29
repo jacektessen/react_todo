@@ -40,7 +40,26 @@ export function handleAddTask(task) {
   };
 }
 
-export function handleDeleteTask(task) {}
+export function handleDeleteTask(taskID) {
+  return dispatch => {
+    dispatch({ type: "DELETE_TASK_LOAD" });
+    axios
+      .delete(`http://localhost:8000/api/v1/tasks/${taskID}`)
+      .then(() => {
+        dispatch({
+          type: "DELETE_TASK_SUCCESS",
+          payload: taskID
+        });
+        // dispatch({
+        //   type: "REFRESH_ "
+        // });
+        // // getTasksAPI();
+      })
+      .catch(error => {
+        dispatch({ type: "DELETE_TASK_FAILURE", payload: error });
+      });
+  };
+}
 
 // prettier-ignore
 const initState = {
@@ -58,13 +77,11 @@ const initState = {
 };
 
 function getColumnsFromTasks(tasks) {
-  const { columns, columnOrder } = {...initState};
-  Object.keys(columns).map(key => columns[key].taskIds = []);
+  const { columns, columnOrder } = { ...initState };
+  Object.keys(columns).map(key => (columns[key].taskIds = []));
   columnOrder.map(column =>
     columns[column].taskIds.push(
-      ...tasks.map(task =>
-        task.column === column ? String(task.id) : null
-      )
+      ...tasks.map(task => (task.column === column ? String(task.id) : null))
     )
   );
 
@@ -83,7 +100,7 @@ export default function tasksReducer(state = initState, action) {
         ...state,
         loading: true
       };
-    case "GET_TASKS_API_SUCCESS":{
+    case "GET_TASKS_API_SUCCESS": {
       const tasks = action.payload;
       const columns = getColumnsFromTasks(tasks);
       return {
@@ -93,7 +110,8 @@ export default function tasksReducer(state = initState, action) {
         loading: false,
         loaded: true,
         error: null
-      }};
+      };
+    }
     case "GET_TASKS_API_FAILURE":
       return {
         ...state,
@@ -109,12 +127,12 @@ export default function tasksReducer(state = initState, action) {
         loading: true,
         loaded: false
       };
-    case "POST_TASK_SUCCESS":{
+    case "POST_TASK_SUCCESS": {
       const tasks = [...state.tasks];
       const task = {
         ...action.payload,
         id: String(action.payload.id)
-      }
+      };
       tasks.push(task);
       const columns = getColumnsFromTasks(tasks);
       return {
@@ -123,12 +141,38 @@ export default function tasksReducer(state = initState, action) {
         loaded: true,
         columns,
         tasks
-      }};
+      };
+    }
     case "POST_TASK_FAILURE":
       return {
         ...state,
         loading: false,
         loaded: true,
+        error: action.payload
+      };
+    case "DELETE_TASK_LOAD":
+      return {
+        ...state
+        // loading: true,
+        // loaded: false
+      };
+    case "DELETE_TASK_SUCCESS": {
+      console.log("delete response", action.payload);
+      const tasks = [...state.tasks.filter(task => task.id !== action.payload)];
+      const columns = getColumnsFromTasks(tasks);
+      return {
+        ...state,
+        tasks,
+        columns
+        // loading: false,
+        // loaded: true
+      };
+    }
+    case "DELETE_TASK_FAILURE":
+      return {
+        ...state,
+        // loading: false,
+        // loaded: true,
         error: action.payload
       };
     default:
