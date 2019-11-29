@@ -41,22 +41,23 @@ export function handleAddTask(task) {
 }
 
 export function handleDeleteTask(taskID) {
-  return dispatch => {
-    dispatch({ type: "DELETE_TASK_LOAD" });
-    axios
+  return async dispatch => {
+    await axios
       .delete(`http://localhost:8000/api/v1/tasks/${taskID}`)
-      .then(() => {
-        dispatch({
-          type: "DELETE_TASK_SUCCESS",
-          payload: taskID
-        });
-        // dispatch({
-        //   type: "REFRESH_ "
-        // });
-        // // getTasksAPI();
-      })
+      .then(() => console.log("Delete success taskID: ", taskID))
       .catch(error => {
         dispatch({ type: "DELETE_TASK_FAILURE", payload: error });
+      });
+
+    axios
+      .get("http://localhost:8000/api/v2/tasks/")
+      .then(res => {
+        const tasks = res.data.data.tasks;
+        tasks.map(task => (task.id = String(task.id)));
+        dispatch({ type: "GET_TASKS_API_SUCCESS", payload: tasks });
+      })
+      .catch(error => {
+        dispatch({ type: "GET_TASKS_API_FAILURE", payload: error });
       });
   };
 }
@@ -101,6 +102,7 @@ export default function tasksReducer(state = initState, action) {
         loading: true
       };
     case "GET_TASKS_API_SUCCESS": {
+      console.log("get log 3");
       const tasks = action.payload;
       const columns = getColumnsFromTasks(tasks);
       return {
@@ -150,31 +152,30 @@ export default function tasksReducer(state = initState, action) {
         loaded: true,
         error: action.payload
       };
-    case "DELETE_TASK_LOAD":
-      return {
-        ...state
-        // loading: true,
-        // loaded: false
-      };
+    // case "DELETE_TASK_LOAD":
+    //   return {
+    //     ...state
+    //   };
     case "DELETE_TASK_SUCCESS": {
-      console.log("delete response", action.payload);
-      const tasks = [...state.tasks.filter(task => task.id !== action.payload)];
-      const columns = getColumnsFromTasks(tasks);
-      return {
-        ...state,
-        tasks,
-        columns
-        // loading: false,
-        // loaded: true
-      };
+      // console.log("delete response", action.payload);
+      // getTasksAPI();
+      return state;
+      // return;
+      // const tasks = [...state.tasks.filter(task => task.id !== action.payload)];
+      // const columns = getColumnsFromTasks(tasks);
+      // return {
+      //   ...state,
+      //   // tasks,
+      //   // columns
+      // };
     }
     case "DELETE_TASK_FAILURE":
       return {
         ...state,
-        // loading: false,
-        // loaded: true,
         error: action.payload
       };
+    // case "REFRESH_PAGE":
+    //   return getTasksAPI();
     default:
       return state;
   }

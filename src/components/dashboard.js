@@ -81,11 +81,6 @@ class Dashboard extends Component {
     this.props.handleTasksChange(newState);
   };
 
-  // handleAddTask = () => {
-  //   const tasks = { ...this.state.tasks };
-  //   tasks.push();
-  // };
-
   render() {
     if (!this.props.tasks.loaded && !this.props.tasks.loading)
       return <h1>Starting...........</h1>;
