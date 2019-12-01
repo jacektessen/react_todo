@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
 import { handleDeleteTask } from ".././redux/tasks";
 import { connect } from "react-redux";
@@ -14,10 +15,11 @@ const Container = styled.div`
 `;
 
 class Task extends Component {
-  handleClick = () => {
+  handleDelete = () => {
     console.log("delete jest kliknięty", this.props.task.id);
     this.props.handleDeleteTask(this.props.task.id);
   };
+  handleEdit = () => {};
   render() {
     // console.log("Props w task", this.props);
     return (
@@ -30,10 +32,17 @@ class Task extends Component {
           >
             {this.props.task.content} id: {this.props.task.id}
             <i
-              onClick={this.handleClick}
+              onClick={this.handleDelete}
               className="fa fa-trash-o fa-lg"
               aria-hidden="true"
             ></i>
+            <Link to={`/tasks/${this.props.task.id}`}>
+              <i
+                onClick={this.handleEdit}
+                className="fa fa-pencil fa-lg"
+                aria-hidden="true"
+              ></i>
+            </Link>
           </Container>
         )}
       </Draggable>

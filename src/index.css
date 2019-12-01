@@ -18,6 +18,13 @@ code {
   float: right;
 }
 
+.fa-pencil {
+  /* color: green; */
+  cursor: pointer;
+  float: right;
+  margin-right: 7px;
+}
+
 .dashboard_whole {
   min-width: 950px;
 }

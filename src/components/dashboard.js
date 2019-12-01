@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./column";
 import { Link } from "react-router-dom";
-import { getTasksAPI, handleTasksChange } from ".././redux/tasks";
+import { handleGetTasks, handleChangeTasks } from ".././redux/tasks";
 import { connect } from "react-redux";
 
 const Container = styled.div`
@@ -13,7 +13,7 @@ const Container = styled.div`
 
 class Dashboard extends Component {
   componentDidMount() {
-    if (!this.props.tasks.tasks[0]) this.props.getTasksAPI();
+    if (!this.props.tasks.tasks[0]) this.props.handleGetTasks();
   }
 
   onDragEnd = result => {
@@ -50,7 +50,7 @@ class Dashboard extends Component {
         }
       };
 
-      this.props.handleTasksChange(newState);
+      this.props.handleChangeTasks(newState);
       return;
     }
 
@@ -78,10 +78,11 @@ class Dashboard extends Component {
       }
     };
 
-    this.props.handleTasksChange(newState);
+    this.props.handleChangeTasks(newState);
   };
 
   render() {
+    console.log("props w dashboard", this.props.tasks);
     if (!this.props.tasks.loaded && !this.props.tasks.loading)
       return <h1>Starting...........</h1>;
     if (this.props.tasks.loading) return <h1>Loading.................</h1>;
@@ -136,6 +137,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { getTasksAPI, handleTasksChange })(
-  Dashboard
-);
+export default connect(mapStateToProps, {
+  handleGetTasks,
+  handleChangeTasks
+})(Dashboard);

@@ -12,7 +12,7 @@ class App extends Component {
       <React.Fragment>
         <Switch>
           <Route path="/tasks/add" exact component={TaskForm} />
-          <Route path="/tasks/:code" component={TaskDetails} />
+          <Route path="/tasks/:code" component={TaskForm} />
           <Route path="/not-found" component={NotFound} />
           <Route path="/dashboard" exact component={Dashboard} />
           <Route path="/" exact component={Home} />
