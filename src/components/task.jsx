@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
 import { handleDeleteTask } from ".././redux/tasks";
+import { showModal } from "../redux/modal";
 import { connect } from "react-redux";
 
 const Container = styled.div`
@@ -16,38 +17,39 @@ const Container = styled.div`
 
 class Task extends Component {
   handleDelete = () => {
-    console.log("delete jest kliknięty", this.props.task.id);
     this.props.handleDeleteTask(this.props.task.id);
   };
-  handleEdit = () => {};
+  renderModal = () => {
+    this.props.showModal(this.props.task.id);
+  };
   render() {
     // console.log("Props w task", this.props);
     return (
-      <Draggable draggableId={this.props.task.id} index={this.props.index}>
-        {provided => (
-          <Container
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            ref={provided.innerRef}
-          >
-            {this.props.task.content} id: {this.props.task.id}
-            <i
-              onClick={this.handleDelete}
-              className="fa fa-trash-o fa-lg"
-              aria-hidden="true"
-            ></i>
-            <Link to={`/tasks/${this.props.task.id}`}>
+      <div>
+        <Draggable draggableId={this.props.task.id} index={this.props.index}>
+          {provided => (
+            <Container
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+            >
+              {this.props.task.name} id: {this.props.task.id}
               <i
-                onClick={this.handleEdit}
+                onClick={this.handleDelete}
+                className="fa fa-trash-o fa-lg"
+                aria-hidden="true"
+              ></i>
+              <i
+                onClick={this.renderModal}
                 className="fa fa-pencil fa-lg"
                 aria-hidden="true"
               ></i>
-            </Link>
-          </Container>
-        )}
-      </Draggable>
+            </Container>
+          )}
+        </Draggable>
+      </div>
     );
   }
 }
 
-export default connect(null, { handleDeleteTask })(Task);
+export default connect(null, { handleDeleteTask, showModal })(Task);

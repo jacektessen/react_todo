@@ -1,9 +1,11 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import tasksReducer from "./tasks";
+import modalReducer from "./modal";
 import thunk from "redux-thunk";
 
 const rootReducer = combineReducers({
-  tasks: tasksReducer
+  tasks: tasksReducer,
+  modal: modalReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

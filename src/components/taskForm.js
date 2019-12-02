@@ -8,7 +8,7 @@ import {
   handleChangeTasks,
   handleGetTasks
 } from ".././redux/tasks";
-import { conditionalExpression } from "@babel/types";
+import { closeModal } from ".././redux/modal";
 
 class TaskForm extends Form {
   state = {
@@ -33,14 +33,12 @@ class TaskForm extends Form {
   };
 
   doSubmit = () => {
-    if (this.props.match.params.code) {
-      const taskID = this.props.match.params.code;
+    if (this.props.modal.taskID) {
+      const taskID = this.props.modal.taskID;
       const columns = { ...this.props.tasks.columns };
       this.props.tasks.columnOrder.map(column => {
         if (columns[column].taskIds.includes(taskID)) {
-          console.log("log1", columns);
           if (column !== this.state.data.column) {
-            console.log("log 2", columns);
             columns[column].taskIds = columns[column].taskIds.filter(item => {
               if (item !== taskID) return item;
             });
@@ -48,11 +46,10 @@ class TaskForm extends Form {
           }
         }
       });
-      console.log("log 3", columns);
       const newData = {
         ...this.props.tasks,
         tasks: this.props.tasks.tasks.map(task =>
-          task.id === this.props.match.params.code
+          task.id === taskID
             ? {
                 ...task,
                 name: this.state.data.name,
@@ -63,20 +60,18 @@ class TaskForm extends Form {
         ),
         columns: columns
       };
-      console.log("newData FORM", newData);
       this.props.handleChangeTasks(newData);
-      this.props.history.push("/dashboard");
+      this.props.closeModal();
       return;
     }
     this.props.handleAddTask(this.state.data);
-    this.props.history.push("/dashboard");
+    this.props.closeModal();
   };
 
   componentDidMount() {
     console.log("component did mount");
-    if (this.props.match.params.code) {
-      this.props.handleGetTasks();
-      const taskID = this.props.match.params.code;
+    if (this.props.modal.taskID) {
+      const taskID = this.props.modal.taskID;
       axios.get(`http://localhost:8000/api/v2/tasks/${taskID}`).then(res => {
         console.log("res", res);
         this.setState({
@@ -89,9 +84,9 @@ class TaskForm extends Form {
       });
     }
   }
+
   // prettier-ignore
   render() {
-    console.log("props in form", this.props)
     return (
       <div>
         <h1>Task Form</h1>
@@ -108,12 +103,14 @@ class TaskForm extends Form {
 
 const mapStateToProps = state => {
   return {
-    tasks: state.tasks
+    tasks: state.tasks,
+    modal: state.modal
   };
 };
 
 export default connect(mapStateToProps, {
   handleAddTask,
   handleChangeTasks,
-  handleGetTasks
+  handleGetTasks,
+  closeModal
 })(TaskForm);

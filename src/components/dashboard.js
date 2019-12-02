@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./column";
-import { Link } from "react-router-dom";
-import { handleGetTasks, handleChangeTasks } from ".././redux/tasks";
+import TaskForm from "./taskForm";
+import Modal from "./common/modal/modal";
+import { handleGetTasks, handleChangeTasks } from "../redux/tasks";
+import { showModal } from "../redux/modal";
 import { connect } from "react-redux";
 
 const Container = styled.div`
@@ -15,6 +17,8 @@ class Dashboard extends Component {
   componentDidMount() {
     if (!this.props.tasks.tasks[0]) this.props.handleGetTasks();
   }
+
+  renderTaskForm = () => {};
 
   onDragEnd = result => {
     const { destination, source, draggableId } = result;
@@ -99,9 +103,11 @@ class Dashboard extends Component {
           <div className="row">
             <div className="col-1">
               <h2>TODO</h2>
-              <Link to={{ pathname: "/tasks/add", state: { columns } }}>
-                <i className="fa fa-plus-circle fa-3x" aria-hidden="true"></i>
-              </Link>
+              <i
+                onClick={() => this.props.showModal()}
+                className="fa fa-plus-circle fa-3x"
+                aria-hidden="true"
+              ></i>
             </div>
             <div className="col-10">
               <DragDropContext onDragEnd={this.onDragEnd}>
@@ -126,6 +132,9 @@ class Dashboard extends Component {
             </div>
           </div>
         </div>
+        <Modal clickOutside={false}>
+          <TaskForm />
+        </Modal>
       </React.Fragment>
     );
   }
@@ -139,5 +148,6 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   handleGetTasks,
-  handleChangeTasks
+  handleChangeTasks,
+  showModal
 })(Dashboard);

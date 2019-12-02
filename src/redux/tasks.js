@@ -19,9 +19,7 @@ export function handleGetTasks() {
 
 // prettier-ignore
 export function handleChangeTasks(newData) {
-  console.log("newData", newData);
   return async (dispatch, getState) => {
-    console.log("getState", getState())
     const prevData = getState();
     dispatch({ type: "HANDLE_TASKS_CHANGE", payload: newData });
     const newTasks = [];
@@ -47,11 +45,8 @@ export function handleChangeTasks(newData) {
       if (taskA > taskB) return 1;
       return 0;
     });
-    console.log("New task sorted", newTasks);
-    console.log("prevData", prevData)
     for (let i of _.range(newTasks.length)) {
       if (JSON.stringify(newTasks[i]) !== JSON.stringify(prevData.tasks.tasks[i])) {
-        console.log("Jestem aktualizowany", newTasks[i].id)
         const task = {
           name: newTasks[i].name,
           content: newTasks[i].content,
@@ -160,7 +155,6 @@ function getColumnsFromTasks(tasks) {
       .map(task => task.id);
   });
 
-  console.log("COLUMNS!!!!", columns);
   return columns;
 }
 
@@ -172,7 +166,6 @@ export default function tasksReducer(state = initState, action) {
         loading: true
       };
     case "GET_TASKS_API_SUCCESS": {
-      console.log("get log 3");
       const tasks = action.payload;
       const columns = getColumnsFromTasks(tasks);
       return {
