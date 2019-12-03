@@ -1,11 +1,12 @@
-import axios from "axios";
 import _ from "lodash";
+import http from "../services/httpService";
+import config from "../config.json";
 
 export function handleGetTasks() {
   return dispatch => {
     dispatch({ type: "GET_TASKS_API_LOAD" });
-    axios
-      .get("http://localhost:8000/api/v2/tasks/")
+    http
+      .get(config.apiUrl + "/v2/tasks/")
       .then(res => {
         const tasks = res.data.data.tasks;
         tasks.map(task => (task.id = String(task.id)));
@@ -53,15 +54,15 @@ export function handleChangeTasks(newData) {
           column: newTasks[i].column,
           order_no: newTasks[i].order_no
         };
-        await axios
-          .put(`http://localhost:8000/api/v1/tasks/${newTasks[i].id}/`, task)
+        await http
+          .put(config.apiUrl + `/v1/tasks/${newTasks[i].id}/`, task)
           .catch(error => {
             dispatch({ type: "GET_TASKS_API_FAILURE", payload: error });
           });
       }
     }
-    axios
-      .get("http://localhost:8000/api/v2/tasks/")
+    http
+      .get(config.apiUrl + "/v2/tasks/")
       .then(res => {
         const tasks = res.data.data.tasks;
         tasks.map(task => (task.id = String(task.id)));
@@ -75,14 +76,14 @@ export function handleChangeTasks(newData) {
 
 export function handleAddTask(task) {
   return async dispatch => {
-    await axios
-      .post("http://localhost:8000/api/v1/tasks/", task)
+    await http
+      .post(config.apiUrl + "/v1/tasks/", task)
       .then(res => console.log("POST success, the new ID: ", res.data.id))
       .catch(error => {
         dispatch({ type: "POST_TASK_FAILURE", payload: error });
       });
-    axios
-      .get("http://localhost:8000/api/v2/tasks/")
+    http
+      .get(config.apiUrl + "/v2/tasks/")
       .then(res => {
         const tasks = res.data.data.tasks;
         tasks.map(task => (task.id = String(task.id)));
@@ -96,14 +97,14 @@ export function handleAddTask(task) {
 
 export function handleDeleteTask(taskID) {
   return async dispatch => {
-    await axios
-      .delete(`http://localhost:8000/api/v1/tasks/${taskID}`)
+    await http
+      .delete(config.apiUrl + `/v1/tasks/${taskID}`)
       .then(() => console.log("DELETE success taskID: ", taskID))
       .catch(error => {
         dispatch({ type: "DELETE_TASK_FAILURE", payload: error });
       });
-    axios
-      .get("http://localhost:8000/api/v2/tasks/")
+    http
+      .get(config.apiUrl + "/v2/tasks/")
       .then(res => {
         const tasks = res.data.data.tasks;
         tasks.map(task => (task.id = String(task.id)));
@@ -191,11 +192,14 @@ export default function tasksReducer(state = initState, action) {
         ...state,
         error: action.payload
       };
-    case "DELETE_TASK_FAILURE":
+    case "DELETE_TASK_FAILURE": {
+      alert(action.payload);
       return {
         ...state,
         error: action.payload
       };
+    }
+
     default:
       return state;
   }

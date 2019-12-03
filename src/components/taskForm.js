@@ -1,7 +1,8 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import axios from "axios";
+import http from "../services/httpService";
+import config from "../config.json";
 import { connect } from "react-redux";
 import {
   handleAddTask,
@@ -72,7 +73,7 @@ class TaskForm extends Form {
     console.log("component did mount");
     if (this.props.modal.taskID) {
       const taskID = this.props.modal.taskID;
-      axios.get(`http://localhost:8000/api/v2/tasks/${taskID}`).then(res => {
+      http.get(config.apiURL + `/api/v2/tasks/${taskID}`).then(res => {
         console.log("res", res);
         this.setState({
           data: {

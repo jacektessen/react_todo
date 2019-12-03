@@ -90,13 +90,6 @@ class Dashboard extends Component {
     if (!this.props.tasks.loaded && !this.props.tasks.loading)
       return <h1>Starting...........</h1>;
     if (this.props.tasks.loading) return <h1>Loading.................</h1>;
-    if (this.props.tasks.error)
-      return (
-        <div>
-          <h1>............{this.props.tasks.error.message}..............</h1>
-        </div>
-      );
-    const { columns } = this.props.tasks;
     return (
       <React.Fragment>
         <div className="dashboard_whole">

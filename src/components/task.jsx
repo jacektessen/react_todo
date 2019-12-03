@@ -33,7 +33,7 @@ class Task extends Component {
               {...provided.dragHandleProps}
               ref={provided.innerRef}
             >
-              {this.props.task.name} id: {this.props.task.id}
+              {this.props.task.name}
               <i
                 onClick={this.handleDelete}
                 className="fa fa-trash-o fa-lg"
