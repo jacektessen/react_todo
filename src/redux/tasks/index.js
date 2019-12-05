@@ -1,14 +1,22 @@
 import _ from "lodash";
-import http from "../services/httpService";
-import config from "../config.json";
+import http from "../../services/httpService";
+import { apiUrl } from "../../config.json";
+import getColumnsFromTasks from "./getColumnsFromTasks";
+import getTasksFromColumns from "./getTasksFromColumns";
+
+const apiEndpoint = apiUrl + "/v1/tasks/";
+
+function taskUrl(id) {
+  return apiEndpoint + id + "/";
+}
 
 export function handleGetTasks() {
   return dispatch => {
     dispatch({ type: "GET_TASKS_API_LOAD" });
     http
-      .get(config.apiUrl + "/v2/tasks/")
+      .get(apiEndpoint)
       .then(res => {
-        const tasks = res.data.data.tasks;
+        const tasks = res.data;
         tasks.map(task => (task.id = String(task.id)));
         dispatch({ type: "GET_TASKS_API_SUCCESS", payload: tasks });
       })
@@ -23,29 +31,8 @@ export function handleChangeTasks(newData) {
   return async (dispatch, getState) => {
     const prevData = getState();
     dispatch({ type: "HANDLE_TASKS_CHANGE", payload: newData });
-    const newTasks = [];
-    newData.columnOrder.map(column => newData.columns[column].taskIds.map(taskID =>
-        newData.tasks.map(task => {
-          if (task.id === taskID) {
-            task = {
-              ...task,
-              order_no: newData.columns[column].taskIds.indexOf(taskID),
-              column: column
-            };
-            newTasks.push(task);
-          }})));
-    newData = {
-      ...newData,
-      newTasks
-    };
+    const newTasks = getTasksFromColumns(newData)
 
-    newTasks.sort((a, b) => {
-      const taskA = parseInt(a.id);
-      const taskB = parseInt(b.id);
-      if (taskA < taskB) return -1;
-      if (taskA > taskB) return 1;
-      return 0;
-    });
     for (let i of _.range(newTasks.length)) {
       if (JSON.stringify(newTasks[i]) !== JSON.stringify(prevData.tasks.tasks[i])) {
         const task = {
@@ -55,14 +42,14 @@ export function handleChangeTasks(newData) {
           order_no: newTasks[i].order_no
         };
         await http
-          .put(config.apiUrl + `/v1/tasks/${newTasks[i].id}/`, task)
+          .put(taskUrl(newTasks[i].id), task)
           .catch(error => {
             dispatch({ type: "GET_TASKS_API_FAILURE", payload: error });
           });
       }
     }
     http
-      .get(config.apiUrl + "/v2/tasks/")
+      .get(apiEndpoint)
       .then(res => {
         const tasks = res.data.data.tasks;
         tasks.map(task => (task.id = String(task.id)));
@@ -75,17 +62,18 @@ export function handleChangeTasks(newData) {
 }
 
 export function handleAddTask(task) {
-  return async dispatch => {
+  return async (dispatch, getState) => {
+    console.log("getState", getState());
     await http
-      .post(config.apiUrl + "/v1/tasks/", task)
+      .post(apiEndpoint, task)
       .then(res => console.log("POST success, the new ID: ", res.data.id))
       .catch(error => {
         dispatch({ type: "POST_TASK_FAILURE", payload: error });
       });
     http
-      .get(config.apiUrl + "/v2/tasks/")
+      .get(apiEndpoint)
       .then(res => {
-        const tasks = res.data.data.tasks;
+        const tasks = res.data;
         tasks.map(task => (task.id = String(task.id)));
         dispatch({ type: "GET_TASKS_API_SUCCESS", payload: tasks });
       })
@@ -98,15 +86,15 @@ export function handleAddTask(task) {
 export function handleDeleteTask(taskID) {
   return async dispatch => {
     await http
-      .delete(config.apiUrl + `/v1/tasks/${taskID}`)
+      .delete(taskUrl(taskID))
       .then(() => console.log("DELETE success taskID: ", taskID))
       .catch(error => {
         dispatch({ type: "DELETE_TASK_FAILURE", payload: error });
       });
     http
-      .get(config.apiUrl + "/v2/tasks/")
+      .get(apiEndpoint)
       .then(res => {
-        const tasks = res.data.data.tasks;
+        const tasks = res.data;
         tasks.map(task => (task.id = String(task.id)));
         dispatch({ type: "GET_TASKS_API_SUCCESS", payload: tasks });
       })
@@ -131,34 +119,6 @@ const initState = {
   columnOrder: ["column1", "column2", "column3", "column4"]
 };
 
-function getColumnsFromTasks(tasks) {
-  const { columns, columnOrder } = { ...initState };
-  Object.keys(columns).map(key => (columns[key].taskIds = []));
-  columnOrder.map(column =>
-    columns[column].taskIds.push(
-      ...tasks.map(task =>
-        task.column === column
-          ? { id: String(task.id), order: task.order_no }
-          : null
-      )
-    )
-  );
-  columnOrder.map(column => {
-    columns[column].taskIds = columns[column].taskIds
-      .filter(taskId => taskId !== null)
-      .sort((a, b) => {
-        const taskA = a.order;
-        const taskB = b.order;
-        if (taskA < taskB) return -1;
-        if (taskA > taskB) return 1;
-        return 0;
-      })
-      .map(task => task.id);
-  });
-
-  return columns;
-}
-
 export default function tasksReducer(state = initState, action) {
   switch (action.type) {
     case "GET_TASKS_API_LOAD":
@@ -168,7 +128,7 @@ export default function tasksReducer(state = initState, action) {
       };
     case "GET_TASKS_API_SUCCESS": {
       const tasks = action.payload;
-      const columns = getColumnsFromTasks(tasks);
+      const columns = getColumnsFromTasks(tasks, state);
       return {
         ...state,
         columns,
@@ -187,11 +147,13 @@ export default function tasksReducer(state = initState, action) {
       };
     case "HANDLE_TASKS_CHANGE":
       return (state = action.payload);
-    case "POST_TASK_FAILURE":
+    case "POST_TASK_FAILURE": {
+      alert(action.payload);
       return {
         ...state,
         error: action.payload
       };
+    }
     case "DELETE_TASK_FAILURE": {
       alert(action.payload);
       return {

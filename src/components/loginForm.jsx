@@ -1,6 +1,8 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import { connect } from "react-redux";
+import { login } from "../redux/user";
 
 class LoginForm extends Form {
   state = {
@@ -18,9 +20,18 @@ class LoginForm extends Form {
       .label("Password")
   };
 
-  doSubmit = () => {
-    // Call the server
-    console.log("Submitted");
+  doSubmit = async () => {
+    try {
+      const { data } = this.state;
+      await this.props.login(data.username, data.password);
+      this.props.history.push("/dashboard");
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errors = { ...this.state.errors };
+        errors.username = ex.response.data.non_field_errors[0];
+        this.setState({ errors });
+      }
+    }
   };
 
   render() {
@@ -37,4 +48,4 @@ class LoginForm extends Form {
   }
 }
 
-export default LoginForm;
+export default connect(null, { login })(LoginForm);

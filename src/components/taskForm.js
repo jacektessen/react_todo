@@ -33,47 +33,11 @@ class TaskForm extends Form {
       .label("Name")
   };
 
-  doSubmit = () => {
-    if (this.props.modal.taskID) {
-      const taskID = this.props.modal.taskID;
-      const columns = { ...this.props.tasks.columns };
-      this.props.tasks.columnOrder.map(column => {
-        if (columns[column].taskIds.includes(taskID)) {
-          if (column !== this.state.data.column) {
-            columns[column].taskIds = columns[column].taskIds.filter(item => {
-              if (item !== taskID) return item;
-            });
-            columns[this.state.data.column].taskIds.push(taskID);
-          }
-        }
-      });
-      const newData = {
-        ...this.props.tasks,
-        tasks: this.props.tasks.tasks.map(task =>
-          task.id === taskID
-            ? {
-                ...task,
-                name: this.state.data.name,
-                content: this.state.data.content,
-                column: this.state.data.column
-              }
-            : task
-        ),
-        columns: columns
-      };
-      this.props.handleChangeTasks(newData);
-      this.props.closeModal();
-      return;
-    }
-    this.props.handleAddTask(this.state.data);
-    this.props.closeModal();
-  };
-
   componentDidMount() {
     console.log("component did mount");
     if (this.props.modal.taskID) {
       const taskID = this.props.modal.taskID;
-      http.get(config.apiURL + `/api/v2/tasks/${taskID}`).then(res => {
+      http.get(config.apiUrl + `/v2/tasks/${taskID}`).then(res => {
         console.log("res", res);
         this.setState({
           data: {
@@ -85,6 +49,52 @@ class TaskForm extends Form {
       });
     }
   }
+
+  putTaskIdsInColumns = () => {
+    const taskID = this.props.modal.taskID;
+    const columns = { ...this.props.tasks.columns };
+    this.props.tasks.columnOrder.map(column => {
+      if (columns[column].taskIds.includes(taskID)) {
+        if (column !== this.state.data.column) {
+          columns[column].taskIds = columns[column].taskIds.filter(item => {
+            if (item !== taskID) return item;
+          });
+          columns[this.state.data.column].taskIds.push(taskID);
+        }
+      }
+    });
+    return columns;
+  };
+
+  prepareNewData = () => {
+    const columns = this.putTaskIdsInColumns();
+    const taskID = this.props.modal.taskID;
+    const newData = {
+      ...this.props.tasks,
+      tasks: this.props.tasks.tasks.map(task =>
+        task.id === taskID
+          ? {
+              ...task,
+              name: this.state.data.name,
+              content: this.state.data.content,
+              column: this.state.data.column
+            }
+          : task
+      ),
+      columns: columns
+    };
+    return newData;
+  };
+
+  doSubmit = () => {
+    if (this.props.modal.taskID) {
+      this.props.handleChangeTasks(this.prepareNewData());
+      this.props.closeModal();
+      return;
+    }
+    this.props.handleAddTask(this.state.data);
+    this.props.closeModal();
+  };
 
   // prettier-ignore
   render() {

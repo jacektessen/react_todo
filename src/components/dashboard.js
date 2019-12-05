@@ -6,6 +6,7 @@ import TaskForm from "./taskForm";
 import Modal from "./common/modal/modal";
 import { handleGetTasks, handleChangeTasks } from "../redux/tasks";
 import { showModal } from "../redux/modal";
+import { getCurrentUser } from "../redux/user";
 import { connect } from "react-redux";
 
 const Container = styled.div`
@@ -15,7 +16,7 @@ const Container = styled.div`
 
 class Dashboard extends Component {
   componentDidMount() {
-    if (!this.props.tasks.tasks[0]) this.props.handleGetTasks();
+    this.props.handleGetTasks();
   }
 
   renderTaskForm = () => {};
@@ -95,14 +96,13 @@ class Dashboard extends Component {
         <div className="dashboard_whole">
           <div className="row">
             <div className="col-1">
-              <h2>TODO</h2>
               <i
                 onClick={() => this.props.showModal()}
                 className="fa fa-plus-circle fa-3x"
                 aria-hidden="true"
               ></i>
             </div>
-            <div className="col-10">
+            <div className="col-11">
               <DragDropContext onDragEnd={this.onDragEnd}>
                 <Container>
                   {this.props.tasks.columnOrder.map(columnId => {
@@ -119,9 +119,6 @@ class Dashboard extends Component {
                   })}
                 </Container>
               </DragDropContext>
-            </div>
-            <div className="col-1">
-              <h2>TODO</h2>
             </div>
           </div>
         </div>
@@ -142,5 +139,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   handleGetTasks,
   handleChangeTasks,
-  showModal
+  showModal,
+  getCurrentUser
 })(Dashboard);
