@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { Draggable } from "react-beautiful-dnd";
 import { handleDeleteTask } from ".././redux/tasks";
 import { showModal } from "../redux/modal";

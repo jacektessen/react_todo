@@ -6,7 +6,9 @@ const apiEndpointLogging = apiUrl + "/v1/login/";
 
 const apiEndpointRegister = apiUrl + "/v1/profile/";
 
-http.setJwt();
+try {
+  http.setJwt();
+} catch (error) {}
 
 export function getCurrentUser() {
   return dispatch => {
@@ -33,10 +35,13 @@ export function login(username, password) {
 
 export function logout() {
   return dispatch => {
+    console.log("ddasdsaddadsdasdasdasdaaasd");
     localStorage.removeItem("token");
     dispatch({ type: "LOGOUT_USER" });
   };
 }
+
+export function removeExpiredToken() {}
 
 export function register(user) {
   return async dispatch => {

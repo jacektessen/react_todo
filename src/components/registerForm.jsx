@@ -28,6 +28,7 @@ class RegisterForm extends Form {
     try {
       const response = await this.props.register(this.state.data);
       console.log(response);
+      console.log("props", this.props);
       this.props.history.push("/login");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
