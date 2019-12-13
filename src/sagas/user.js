@@ -5,13 +5,26 @@ import * as actionTypes from "../actions/actionTypes";
 
 function* loginSaga(action) {
   try {
-    const jwt = yield call(http.post, {
+    const jwt = yield call(http.postLogin, {
       email: action.payload.username,
       password: action.payload.password
     });
     yield call(http.setJwt);
     yield put({ type: actionTypes.LOGIN_USER_SUCCESS, payload: jwt });
-  } catch (ex) {}
+  } catch (ex) {
+    yield put({ type: actionTypes.LOGIN_USER_FAILURE, payload: ex });
+  }
+  yield put({ type: actionTypes.GET_CURRENT_USER });
+}
+
+function* registerUserSaga(action) {
+  try {
+    const jwt = yield call(http.postRegister, action.payload);
+    yield call(http.setJwt);
+    yield put({ type: actionTypes.LOGIN_USER_SUCCESS, payload: jwt });
+  } catch (ex) {
+    yield put({ type: actionTypes.REGISTER_FAILURE, payload: ex });
+  }
   yield put({ type: actionTypes.GET_CURRENT_USER });
 }
 
@@ -34,4 +47,5 @@ function* getCurrentUserSaga() {
 export default function* watchUser() {
   yield takeEvery(actionTypes.LOGIN_USER, loginSaga);
   yield takeEvery(actionTypes.GET_CURRENT_USER, getCurrentUserSaga);
+  yield takeEvery(actionTypes.REGISTER, registerUserSaga);
 }

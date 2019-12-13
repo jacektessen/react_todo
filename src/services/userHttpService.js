@@ -8,12 +8,20 @@ const apiEndpointLogging = apiUrl + "/v1/login/";
 const apiEndpointRegister = apiUrl + "/v1/profile/";
 
 function removeExpiredToken(props) {
-  props.logout();
+  console.log("removeExpiredToken");
+  // props.logout();
+  localStorage.removeItem("token");
   window.location = "/login";
 }
 
-async function post(loginData) {
+async function postLogin(loginData) {
   const { data: jwt } = await axios.post(apiEndpointLogging, loginData);
+  localStorage.setItem("token", jwt.token);
+  return jwt;
+}
+
+async function postRegister(user) {
+  const { data: jwt } = await axios.post(apiEndpointRegister, user);
   localStorage.setItem("token", jwt.token);
   return jwt;
 }
@@ -29,7 +37,8 @@ axios.interceptors.response.use(null, error => {
   }
   console.log("error interceptions", error.response.status);
 
-  if (error.response.status === 401) {
+  if (error.response.status == 401) {
+    console.log("działa 401 asdasddssa");
     removeExpiredToken();
   }
 
@@ -43,10 +52,17 @@ function setJwt() {
 
 export default {
   get: axios.get,
-  post,
+  postLogin,
+  postRegister,
   put: axios.put,
   delete: axios.delete,
   setJwt
 };
 
-connect(null, { logout })(removeExpiredToken);
+const mapsDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  };
+};
+
+connect(null, mapsDispatchToProps)(removeExpiredToken);

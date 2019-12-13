@@ -7,8 +7,6 @@ import reducerModal from "../reducers/modal";
 import watchUser from "../sagas/user";
 import watchTasks from "../sagas/tasks";
 
-import thunk from "redux-thunk";
-
 const rootReducer = combineReducers({
   tasks: reducerTasks,
   modal: reducerModal,

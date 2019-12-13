@@ -7,6 +7,7 @@ import { logout } from "../actions/user";
 const apiEndpoint = apiUrl + "/v1/tasks/";
 
 function removeExpiredToken(props) {
+  console.log("removeExpiredToken w tasks");
   props.logout();
   window.location = "/login";
 }
@@ -42,9 +43,8 @@ axios.interceptors.response.use(null, error => {
   if (!expectedError) {
     toast.error("An unexpected error occurrred.");
   }
-  console.log("error interceptions", error.response.status);
 
-  if (error.response.status === 401) {
+  if (error.response.status == 401) {
     removeExpiredToken();
   }
 
