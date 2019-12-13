@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ModalContent from "./modalContent";
 import { connect } from "react-redux";
-import { showModal, closeModal } from "../../../redux/modal";
+import { showModal, closeModal } from "../../../actions/modal";
 
 export class Modal extends Component {
   constructor() {
@@ -35,7 +35,6 @@ export class Modal extends Component {
     document.querySelector("html").classList.toggle("scroll-lock");
   };
   render() {
-    // console.log("childer in carouselModa", this.props.children);
     return (
       <React.Fragment>
         {this.props.modal.isShown ? (
@@ -59,7 +58,14 @@ export class Modal extends Component {
   }
 }
 
-export default connect(state => ({ modal: state.modal }), {
-  showModal,
-  closeModal
-})(Modal);
+const mapDispatchToProps = dispatch => {
+  return {
+    closeModal: () => dispatch(closeModal()),
+    showModal: taskID => dispatch(showModal(taskID))
+  };
+};
+
+export default connect(
+  state => ({ modal: state.modal }),
+  mapDispatchToProps
+)(Modal);

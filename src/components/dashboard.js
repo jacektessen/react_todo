@@ -4,9 +4,9 @@ import { DragDropContext } from "react-beautiful-dnd";
 import Column from "./column";
 import TaskForm from "./taskForm";
 import Modal from "./common/modal/modal";
-import { handleGetTasks, handleChangeTasks } from "../redux/tasks";
-import { showModal } from "../redux/modal";
-import { getCurrentUser } from "../redux/user";
+import { handleGetTasks, handleChangeTasks } from "../actions/tasks";
+import { showModal } from "../actions/modal";
+import { getCurrentUser } from "../actions/user";
 import { connect } from "react-redux";
 
 const Container = styled.div`
@@ -136,9 +136,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {
-  handleGetTasks,
-  handleChangeTasks,
-  showModal,
-  getCurrentUser
-})(Dashboard);
+const mapDispatchToProps = dispatch => {
+  return {
+    handleGetTasks: () => dispatch(handleGetTasks()),
+    handleChangeTasks: newData => dispatch(handleChangeTasks(newData)),
+    showModal: taskID => dispatch(showModal(taskID)),
+    getCurrentUser: () => dispatch(getCurrentUser())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);

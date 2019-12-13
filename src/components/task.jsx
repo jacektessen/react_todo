@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
-import { handleDeleteTask } from ".././redux/tasks";
-import { showModal } from "../redux/modal";
+import { handleDeleteTask } from "../actions/tasks";
+import { showModal } from "../actions/modal";
 import { connect } from "react-redux";
 
 const Container = styled.div`
@@ -22,7 +22,6 @@ class Task extends Component {
     this.props.showModal(this.props.task.id);
   };
   render() {
-    // console.log("Props w task", this.props);
     return (
       <div>
         <Draggable draggableId={this.props.task.id} index={this.props.index}>
@@ -51,4 +50,11 @@ class Task extends Component {
   }
 }
 
-export default connect(null, { handleDeleteTask, showModal })(Task);
+const mapDispatchToProps = dispatch => {
+  return {
+    handleDeleteTask: taskID => dispatch(handleDeleteTask(taskID)),
+    showModal: taskID => dispatch(showModal(taskID))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Task);

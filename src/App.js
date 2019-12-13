@@ -9,7 +9,7 @@ import RegisterForm from "./components/registerForm";
 import LoginForm from "./components/loginForm";
 import NavBar from "./components/navBar";
 import Logout from "./components/logout";
-import { getCurrentUser } from "./redux/user";
+import { getCurrentUser } from "./actions/user";
 import "react-toastify/dist/ReactToastify.css";
 
 class App extends Component {
@@ -47,6 +47,13 @@ class App extends Component {
   }
 }
 
-export default connect(state => ({ user: state.currentUser }), {
-  getCurrentUser
-})(App);
+const mapDispatchToProps = dispatch => {
+  return {
+    getCurrentUser: () => dispatch(getCurrentUser())
+  };
+};
+
+export default connect(
+  state => ({ user: state.currentUser }),
+  mapDispatchToProps
+)(App);

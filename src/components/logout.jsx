@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { logout } from "../redux/user";
+import { logout } from "../actions/user";
 import { connect } from "react-redux";
 
 class Logout extends Component {
@@ -12,4 +12,10 @@ class Logout extends Component {
   }
 }
 
-export default connect(null, { logout })(Logout);
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logout())
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Logout);

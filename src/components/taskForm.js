@@ -1,15 +1,15 @@
 import React from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import http from "../services/httpService";
+import axios from "axios";
 import config from "../config.json";
 import { connect } from "react-redux";
 import {
   handleAddTask,
   handleChangeTasks,
   handleGetTasks
-} from ".././redux/tasks";
-import { closeModal } from ".././redux/modal";
+} from "../actions/tasks";
+import { closeModal } from "../actions/modal";
 
 class TaskForm extends Form {
   state = {
@@ -34,11 +34,9 @@ class TaskForm extends Form {
   };
 
   componentDidMount() {
-    console.log("component did mount");
     if (this.props.modal.taskID) {
       const taskID = this.props.modal.taskID;
-      http.get(config.apiUrl + `/v2/tasks/${taskID}`).then(res => {
-        console.log("res", res);
+      axios.get(config.apiUrl + `/v2/tasks/${taskID}`).then(res => {
         this.setState({
           data: {
             column: res.data.task.column,
@@ -119,9 +117,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, {
-  handleAddTask,
-  handleChangeTasks,
-  handleGetTasks,
-  closeModal
-})(TaskForm);
+const mapDispatchToProps = dispatch => {
+  return {
+    handleGetTasks: () => dispatch(handleGetTasks()),
+    handleChangeTasks: newData => dispatch(handleChangeTasks(newData)),
+    handleAddTask: task => dispatch(handleAddTask(task)),
+    closeModal: () => dispatch(closeModal())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TaskForm);

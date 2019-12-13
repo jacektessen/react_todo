@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import { register } from "../redux/user";
+import { register } from "../actions/user";
 import { connect } from "react-redux";
 
 class RegisterForm extends Form {
@@ -27,8 +27,6 @@ class RegisterForm extends Form {
   doSubmit = async () => {
     try {
       const response = await this.props.register(this.state.data);
-      console.log(response);
-      console.log("props", this.props);
       this.props.history.push("/login");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
@@ -54,4 +52,10 @@ class RegisterForm extends Form {
   }
 }
 
-export default connect(null, { register })(RegisterForm);
+const mapDispatchToProps = dispatch => {
+  return {
+    register: user => dispatch(register(user))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(RegisterForm);

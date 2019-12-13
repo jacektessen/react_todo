@@ -1,12 +1,21 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import { connect } from "react-redux";
-import { logout } from "../redux/user";
+import { logout } from "../actions/user";
+import { apiUrl } from "../config.json";
+
+const apiEndpointLogging = apiUrl + "/v1/login/";
+const apiEndpointRegister = apiUrl + "/v1/profile/";
 
 function removeExpiredToken(props) {
-  console.log("401 401 401 401");
   props.logout();
   window.location = "/login";
+}
+
+async function post(loginData) {
+  const { data: jwt } = await axios.post(apiEndpointLogging, loginData);
+  localStorage.setItem("token", jwt.token);
+  return jwt;
 }
 
 axios.interceptors.response.use(null, error => {
@@ -28,14 +37,13 @@ axios.interceptors.response.use(null, error => {
 });
 
 function setJwt() {
-  console.log("authorization");
   const jwt = localStorage.getItem("token");
   axios.defaults.headers.common["Authorization"] = `JWT ${jwt}`;
 }
 
 export default {
   get: axios.get,
-  post: axios.post,
+  post,
   put: axios.put,
   delete: axios.delete,
   setJwt
