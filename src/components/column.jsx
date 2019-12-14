@@ -16,7 +16,13 @@ const Container = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  width: 48%;
+  @media (min-width: 950px) {
+    width: 48%;
+  }
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+  width: 600px;
   ${props =>
     props.column &&
     css`

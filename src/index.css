@@ -1,13 +1,14 @@
-.fa-trash-o {
-  color: red;
-  cursor: pointer;
+.edit-button-tasks {
   float: right;
+  background-color: white;
+  border: none;
 }
 
-.fa-pencil {
-  cursor: pointer;
+.delete-button-tasks {
   float: right;
-  margin-right: 7px;
+  background-color: white;
+  border: none;
+  color: red;
 }
 
 .fa-plus-circle {
@@ -15,8 +16,30 @@
   color: green;
 }
 
-.dashboard_whole {
-  min-width: 950px;
+@media (max-width: 1400px) and (min-width: 950px) {
+  .dashboard_whole {
+    width: 100%;
+  }
+}
+
+@media (min-width: 1400px) {
+  body {
+    display: flex;
+    justify-content: center;
+  }
+  .dashboard_whole {
+    width: 1400px;
+  }
+}
+
+@media (max-width: 950px) and (min-width: 600px) {
+  body {
+    display: flex;
+    justify-content: center;
+  }
+  .dashboard_whole {
+    width: 600px;
+  }
 }
 
 .login_demo_data {
@@ -95,7 +118,7 @@ p.lorem-text {
   -webkit-overflow-scrolling: touch;
 }
 
-@media screen and (min-width: 500px) {
+@media screen and (min-width: 670px) {
   /* Center the Modal! */
   .modal-area {
     left: 50%;
