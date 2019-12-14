@@ -30,10 +30,10 @@ const initState = {
   loaded: false,
   error: null,
   columns: { 
-    column1: { id: "column1", title: "Ważne", taskIds: [] }, 
-    column2: { id: "column2", title: "Normalny priorytet", taskIds: [] }, 
-    column3: { id: "column3", title: "Później", taskIds: [] }, 
-    column4: { id: "column4", title: "Gotowe", taskIds: [] }
+    column1: { id: "column1", title: "Important", taskIds: [] }, 
+    column2: { id: "column2", title: "Normal", taskIds: [] }, 
+    column3: { id: "column3", title: "Later", taskIds: [] }, 
+    column4: { id: "column4", title: "Done", taskIds: [] }
   },
   columnOrder: ["column1", "column2", "column3", "column4"]
 };

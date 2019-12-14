@@ -94,15 +94,16 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <div className="dashboard_whole">
+          <div className="row d-flex justify-content-center">
+            <button
+              className="btn btn-success"
+              onClick={() => this.props.showModal()}
+            >
+              + Add a new task
+            </button>
+          </div>
           <div className="row">
-            <div className="col-1">
-              <i
-                onClick={() => this.props.showModal()}
-                className="fa fa-plus-circle fa-3x"
-                aria-hidden="true"
-              ></i>
-            </div>
-            <div className="col-11">
+            <div className="col">
               <DragDropContext onDragEnd={this.onDragEnd}>
                 <Container>
                   {this.props.tasks.columnOrder.map(columnId => {

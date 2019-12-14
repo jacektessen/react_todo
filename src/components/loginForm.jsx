@@ -26,6 +26,7 @@ class LoginForm extends Form {
   };
 
   render() {
+    // prettier-ignore
     return (
       <div>
         <h1>Login</h1>
@@ -34,6 +35,14 @@ class LoginForm extends Form {
           {this.renderInput("password", "Password", "password")}
           {this.renderButton("Login")}
         </form>
+        
+        <div className="login_demo_data">
+          <p>
+            You can use the following data: <br />
+            Username: tester@gmail.com<br />
+            Password: 123456
+          </p>
+        </div>
       </div>
     );
   }

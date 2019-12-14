@@ -16,7 +16,7 @@ const Container = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
-  width: 31%;
+  width: 48%;
   ${props =>
     props.column &&
     css`
