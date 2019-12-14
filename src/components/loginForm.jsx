@@ -28,7 +28,7 @@ class LoginForm extends Form {
   render() {
     // prettier-ignore
     return (
-      <div>
+      <div className="login-form">
         <h1>Login</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("username", "Username")}

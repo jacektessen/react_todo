@@ -1,12 +1,12 @@
 .edit-button-tasks {
   float: right;
-  background-color: white;
+  background-color: rgba(0, 0, 0, 0);
   border: none;
 }
 
 .delete-button-tasks {
   float: right;
-  background-color: white;
+  background-color: rgba(0, 0, 0, 0);
   border: none;
   color: red;
 }
@@ -32,7 +32,7 @@
   }
 }
 
-@media (max-width: 950px) and (min-width: 600px) {
+@media (max-width: 949px) and (min-width: 600px) {
   body {
     display: flex;
     justify-content: center;
@@ -46,6 +46,10 @@
   border: 1px solid black;
   width: 300px;
   margin-top: 20px;
+}
+
+.login-form {
+  width: 320px;
 }
 
 /* modal */

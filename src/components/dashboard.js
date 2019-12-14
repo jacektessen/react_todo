@@ -96,7 +96,7 @@ class Dashboard extends Component {
         <div className="dashboard_whole">
           <div className="row d-flex justify-content-center">
             <button
-              className="btn btn-success"
+              className="btn btn-success mt-2"
               onClick={() => this.props.showModal()}
             >
               + Add a new task

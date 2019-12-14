@@ -12,6 +12,9 @@ const Container = styled.div`
   margin-bottom: 8px;
   background-color: white;
   position: flex;
+  &:hover {
+    background-color: rgba(255, 236, 236, 0.6);
+  }
 `;
 
 class Task extends Component {
@@ -26,22 +29,27 @@ class Task extends Component {
       <div>
         <Draggable draggableId={this.props.task.id} index={this.props.index}>
           {provided => (
-            <Container
-              {...provided.draggableProps}
-              {...provided.dragHandleProps}
-              ref={provided.innerRef}
-            >
-              {this.props.task.name}
-              <button
-                onClick={this.handleDelete}
-                className="delete-button-tasks"
+            <div>
+              <Container
+                {...provided.draggableProps}
+                {...provided.dragHandleProps}
+                ref={provided.innerRef}
               >
-                <i className="fa fa-trash-o fa-lg" aria-hidden="true"></i>
-              </button>
-              <button className="edit-button-tasks" onClick={this.renderModal}>
-                <i className="fa fa-pencil fa-lg" aria-hidden="true"></i>
-              </button>
-            </Container>
+                {this.props.task.name}
+                <button
+                  onClick={this.handleDelete}
+                  className="delete-button-tasks"
+                >
+                  <i className="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+                </button>
+                <button
+                  className="edit-button-tasks"
+                  onClick={this.renderModal}
+                >
+                  <i className="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                </button>
+              </Container>
+            </div>
           )}
         </Draggable>
       </div>
