@@ -1,9 +1,9 @@
 import React from "react";
 import styled, { ThemeProvider, css } from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
-import Task from "./task";
+import Task from "../task";
 
-const theme = {
+export const theme = {
   background: {
     column1: "#ffcc80",
     column2: "#fff176",
@@ -12,7 +12,7 @@ const theme = {
   }
 };
 
-const Container = styled.div`
+export const Container = styled.div`
   margin: 8px;
   border: 1px solid lightgrey;
   border-radius: 2px;
@@ -30,18 +30,17 @@ const Container = styled.div`
 
       /* clear: ${props => (props.column === "column4" ? "both" : null)}; */
       /* width: ${props => (props.column === "column4" ? "50%" : null)};
-      vertical-align: ${props =>
-        props.column === "column4" ? "bottom" : null}; */
+      vertical-align: ${props => (props.column === "column4" ? "bottom" : null)}; */
     `}
   display: flex;
   flex-direction: column;
 `;
 
-const Title = styled.h3`
+export const Title = styled.h3`
   padding: 4px;
 `;
 
-const TaskList = styled.div`
+export const TaskList = styled.div`
   padding: 8px;
   flex-grow: 1;
   min-height: 100px;

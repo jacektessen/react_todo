@@ -12,7 +12,7 @@ import Logout from "./components/logout";
 import { getCurrentUser } from "./actions/user";
 import "react-toastify/dist/ReactToastify.css";
 
-class App extends Component {
+export class App extends Component {
   state = { currentUserIsMounted: false };
 
   componentDidMount() {
@@ -23,6 +23,21 @@ class App extends Component {
   render() {
     console.log("props in App", this.props);
     if (!this.state.currentUserIsMounted) return null;
+    console.log(        <Switch>
+      <Route path="/register" exact component={RegisterForm} />
+      <Route path="/login" exact render={() => {
+          if (this.props.user) return <Redirect to="/dashboard" /> 
+          return <LoginForm /> }} />
+      <Route path="/logout" exact component={Logout} />
+      <Route path="/tasks/add" exact component={TaskForm} />
+      <Route path="/tasks/:code" exact component={TaskForm} />
+      <Route path="/not-found" exact component={NotFound} />
+      <Route path="/dashboard" exact render={() => {
+          if (!this.props.user) return <Redirect to="/login" />;
+          return <Dashboard /> }} />
+      <Redirect from="/" exact to="/login" />
+      <Redirect to="/not-found" />
+    </Switch>)
     return (
       <React.Fragment>
         <NavBar />
@@ -53,7 +68,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  state => ({ user: state.currentUser }),
-  mapDispatchToProps
-)(App);
+export default connect(state => ({ user: state.currentUser }), mapDispatchToProps)(App);

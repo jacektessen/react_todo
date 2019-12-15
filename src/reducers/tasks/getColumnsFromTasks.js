@@ -4,9 +4,7 @@ export default function getColumnsFromTasks(tasks, state) {
   columnOrder.map(column =>
     columns[column].taskIds.push(
       ...tasks.map(task =>
-        task.column === column
-          ? { id: String(task.id), order: task.order_no }
-          : null
+        task.column === column ? { id: String(task.id), order: task.order_no } : null
       )
     )
   );

@@ -24,7 +24,7 @@ const deleteTaskFailure = (state, error) => {
 };
 
 // prettier-ignore
-const initState = {
+export const initState = {
   tasks: [],
   loading: false,
   loaded: false,

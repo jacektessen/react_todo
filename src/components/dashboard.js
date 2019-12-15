@@ -27,10 +27,7 @@ class Dashboard extends Component {
       return;
     }
 
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) {
+    if (destination.droppableId === source.droppableId && destination.index === source.index) {
       return;
     }
 
@@ -95,10 +92,7 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="dashboard_whole">
           <div className="row d-flex justify-content-center">
-            <button
-              className="btn btn-success mt-2"
-              onClick={() => this.props.showModal()}
-            >
+            <button className="btn btn-success mt-2" onClick={() => this.props.showModal()}>
               + Add a new task
             </button>
           </div>
@@ -114,9 +108,7 @@ class Dashboard extends Component {
                         .indexOf(taskId);
                       return this.props.tasks.tasks[index];
                     });
-                    return (
-                      <Column key={column.id} column={column} tasks={tasks} />
-                    );
+                    return <Column key={column.id} column={column} tasks={tasks} />;
                   })}
                 </Container>
               </DragDropContext>
