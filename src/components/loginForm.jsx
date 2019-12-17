@@ -39,7 +39,7 @@ class LoginForm extends Form {
         <div className="login_demo_data">
           <p>
             You can use the following data: <br />
-            Username: tester@gmail.com<br />
+            Username: user-demo@gmail.com<br />
             Password: 123456
           </p>
         </div>
