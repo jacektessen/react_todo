@@ -19,13 +19,10 @@ function* loginSaga(action) {
 
 function* registerUserSaga(action) {
   try {
-    const jwt = yield call(http.postRegister, action.payload);
-    yield call(http.setJwt);
-    yield put({ type: actionTypes.LOGIN_USER_SUCCESS, payload: jwt });
+    yield call(http.postRegister, action.payload);
   } catch (ex) {
     yield put({ type: actionTypes.REGISTER_FAILURE, payload: ex });
   }
-  yield put({ type: actionTypes.GET_CURRENT_USER });
 }
 
 function* getCurrentUserSaga() {
