@@ -2,14 +2,18 @@ import axios from "axios";
 import { apiUrl } from "../config.json";
 import { connect } from "react-redux";
 
-const apiEndpoint = apiUrl + "/v1/tasks/";
+const apiEndpointV1 = apiUrl + "/v1/tasks/";
+const apiEndpointV2 = apiUrl + "/v2/tasks";
 
 function taskUrl(id) {
-  return apiEndpoint + id + "/";
+  return apiEndpointV1 + id + "/";
 }
 
 async function getTasks() {
-  const { data: tasks } = await axios.get(apiEndpoint);
+  const { data } = await axios.get(apiEndpointV2);
+  console.log("task 1", data);
+  const tasks = data.data.tasks;
+  console.log("tasks 2", tasks);
   tasks.map(task => (task.id = String(task.id)));
   return tasks;
 }
@@ -19,7 +23,7 @@ async function putTask(taskID, task) {
 }
 
 async function postTask(task) {
-  return axios.post(apiEndpoint, task);
+  return axios.post(apiEndpointV1, task);
 }
 
 async function deleteTask(taskID) {

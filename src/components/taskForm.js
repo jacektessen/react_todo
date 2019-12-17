@@ -4,11 +4,7 @@ import Joi from "joi-browser";
 import axios from "axios";
 import config from "../config.json";
 import { connect } from "react-redux";
-import {
-  handleAddTask,
-  handleChangeTasks,
-  handleGetTasks
-} from "../actions/tasks";
+import { handleAddTask, handleChangeTasks, handleGetTasks } from "../actions/tasks";
 import { closeModal } from "../actions/modal";
 
 class TaskForm extends Form {
@@ -34,6 +30,7 @@ class TaskForm extends Form {
   };
 
   componentDidMount() {
+    // this.setState({ data: { userId: this.props.userId } });
     if (this.props.modal.taskID) {
       const taskID = this.props.modal.taskID;
       axios.get(config.apiUrl + `/v2/tasks/${taskID}`).then(res => {
@@ -65,6 +62,7 @@ class TaskForm extends Form {
   };
 
   prepareNewData = () => {
+    console.log("userID", this.props.userId);
     const columns = this.putTaskIdsInColumns();
     const taskID = this.props.modal.taskID;
     const newData = {
@@ -90,7 +88,9 @@ class TaskForm extends Form {
       this.props.closeModal();
       return;
     }
-    this.props.handleAddTask(this.state.data);
+    const data = { ...this.state.data, user: this.props.userId };
+    console.log("Data do add", data);
+    this.props.handleAddTask(data);
     this.props.closeModal();
   };
 
@@ -113,7 +113,8 @@ class TaskForm extends Form {
 const mapStateToProps = state => {
   return {
     tasks: state.tasks,
-    modal: state.modal
+    modal: state.modal,
+    userId: state.currentUser.user.user_id
   };
 };
 
