@@ -11,9 +11,7 @@ function taskUrl(id) {
 
 async function getTasks() {
   const { data } = await axios.get(apiEndpointV2);
-  console.log("task 1", data);
   const tasks = data.data.tasks;
-  console.log("tasks 2", tasks);
   tasks.map(task => (task.id = String(task.id)));
   return tasks;
 }
