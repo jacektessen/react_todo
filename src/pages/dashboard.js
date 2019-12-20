@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import styled from "styled-components";
 import { DragDropContext } from "react-beautiful-dnd";
-import Column from "./column";
-import TaskForm from "./taskForm";
-import Modal from "./common/modal/modal";
+import Column from "../components/column";
+import TaskForm from "../components/taskForm";
+import Modal from "../components/common/modal/modal";
 import { handleGetTasks, handleChangeTasks } from "../actions/tasks";
 import { showModal } from "../actions/modal";
 import { getCurrentUser } from "../actions/user";

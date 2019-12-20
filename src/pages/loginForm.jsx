@@ -1,6 +1,6 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "./common/form";
+import Form from "../components/common/form";
 import { connect } from "react-redux";
 import { login } from "../actions/user";
 
