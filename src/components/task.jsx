@@ -33,20 +33,13 @@ class Task extends Component {
               <Container
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                ref={provided.innerRef}
-              >
+                ref={provided.innerRef}>
                 {this.props.task.name}
-                <button
-                  onClick={this.handleDelete}
-                  className="delete-button-tasks"
-                >
+                <button onClick={this.handleDelete} className="delete-button-tasks">
                   <i className="fa fa-trash-o fa-lg" aria-hidden="true"></i>
                 </button>
-                <button
-                  className="edit-button-tasks"
-                  onClick={this.renderModal}
-                >
-                  <i className="fa fa-pencil fa-lg" aria-hidden="true"></i>
+                <button className="edit-button-tasks" onClick={this.renderModal}>
+                  <i className="fa fa-search-plus fa-lg" aria-hidden="true"></i>
                 </button>
               </Container>
             </div>

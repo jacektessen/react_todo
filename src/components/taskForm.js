@@ -21,9 +21,7 @@ class TaskForm extends Form {
     column: Joi.string()
       .required()
       .label("Column"),
-    content: Joi.string()
-      .required()
-      .label("Content"),
+    content: Joi.string().label("Content"),
     name: Joi.string()
       .required()
       .label("Name")
@@ -62,7 +60,6 @@ class TaskForm extends Form {
   };
 
   prepareNewData = () => {
-    console.log("userID", this.props.userId);
     const columns = this.putTaskIdsInColumns();
     const taskID = this.props.modal.taskID;
     const newData = {
@@ -89,7 +86,6 @@ class TaskForm extends Form {
       return;
     }
     const data = { ...this.state.data, user: this.props.userId };
-    console.log("Data do add", data);
     this.props.handleAddTask(data);
     this.props.closeModal();
   };

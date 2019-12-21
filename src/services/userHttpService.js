@@ -36,7 +36,6 @@ axios.interceptors.response.use(null, error => {
   console.log("error interceptions", error.response.status);
 
   if (error.response.status == 401) {
-    console.log("działa 401 asdasddssa");
     removeExpiredToken();
   }
 

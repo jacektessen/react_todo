@@ -9,7 +9,6 @@ export const login = (username, password) => {
 };
 
 export const logout = () => {
-  console.log("logout w actions");
   return { type: actionTypes.LOGOUT_USER };
 };
 

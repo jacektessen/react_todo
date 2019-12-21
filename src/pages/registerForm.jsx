@@ -27,8 +27,6 @@ class RegisterForm extends Form {
   doSubmit = async () => {
     try {
       await this.props.register(this.state.data);
-      // window.location = "/login";
-      this.props.history.push("/login");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

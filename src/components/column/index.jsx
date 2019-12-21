@@ -2,15 +2,17 @@ import React from "react";
 import styled, { ThemeProvider, css } from "styled-components";
 import { Droppable } from "react-beautiful-dnd";
 import Task from "../task";
+import { getSettingsPage } from "../../actions/settingsPage";
+import { connect } from "react-redux";
 
-export const theme = {
-  background: {
-    column1: "#ffcc80",
-    column2: "#fff176",
-    column3: "#ffeef2",
-    column4: "lightGreen"
-  }
-};
+// export const theme = {
+//   background: {
+//     column1: "#ffcc80",
+//     column2: "#fff176",
+//     column3: "#ffeef2",
+//     column4: "lightGreen"
+//   }
+// };
 
 export const Container = styled.div`
   margin: 8px;
@@ -46,10 +48,24 @@ export const TaskList = styled.div`
   min-height: 100px;
 `;
 
-export default class Column extends React.Component {
+class Column extends React.Component {
+  componentDidMount() {
+    this.props.getSettingsPage();
+  }
   render() {
+    const { settings } = this.props;
+    if (!settings) return null;
+    const theme = {
+      background: {
+        column1: settings.panel_1,
+        column2: settings.panel_2,
+        column3: settings.panel_3,
+        column4: settings.panel_4
+      }
+    };
     return (
       <ThemeProvider theme={theme}>
+        {/* <ThemeProvider theme={this.state.theme}> */}
         <Container column={this.props.column.id}>
           <Title>{this.props.column.title}</Title>
           <Droppable droppableId={this.props.column.id}>
@@ -66,3 +82,17 @@ export default class Column extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    settings: state.settingsPage
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getSettingsPage: () => dispatch(getSettingsPage())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Column);

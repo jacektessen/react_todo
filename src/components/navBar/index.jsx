@@ -18,28 +18,28 @@ export const NavBar = ({ user }) => {
         aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>
-      <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
+      {/* prettier-ignore */}
+      <div
+        className="collapse navbar-collapse justify-content-between"
+        id="navbarNavAltMarkup">
+        <div className="navbar-nav">
+          {user && (
+              <NavLink className="nav-item nav-link active" to="/dashboard">Dashboard</NavLink>
+          )}
+        </div>
         <div className="navbar-nav">
           {!user && (
             <React.Fragment>
-              <NavLink className="nav-item nav-link" to="/login">
-                Login
-              </NavLink>
-              <NavLink className="nav-item nav-link" to="/register">
-                Register
-              </NavLink>
-            </React.Fragment>
-          )}
+              <NavLink className="nav-item nav-link" to="/login">Login</NavLink>
+              <NavLink className="nav-item nav-link" to="/register">Register</NavLink>
+            </React.Fragment>)}
           {user && (
             <React.Fragment>
-              <NavLink className="nav-item nav-link active" to="/dashboard">
-                Dashboard
-              </NavLink>
-              <NavLink className="nav-item nav-link" to="/logout">
-                Logout
-              </NavLink>
+              <NavLink className="nav-item nav-link" to="/logout">Logout</NavLink>
+              <NavLink className="nav-item nav-link" to="/settings"><i className="fa fa-cog fa-lg" aria-hidden="true"></i></NavLink>
             </React.Fragment>
           )}
+
         </div>
       </div>
     </nav>

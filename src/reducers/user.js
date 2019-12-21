@@ -1,6 +1,4 @@
 import * as actionTypes from "../actions/actionTypes";
-import jwtDecode from "jwt-decode";
-import http from "../services/userHttpService";
 
 const logout = () => {
   console.log("logout uruchomione");

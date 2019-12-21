@@ -1,4 +1,4 @@
-import { put, call, takeEvery } from "redux-saga/effects";
+import { put, call, takeEvery, select } from "redux-saga/effects";
 import jwtDecode from "jwt-decode";
 import http from "../services/userHttpService";
 import * as actionTypes from "../actions/actionTypes";
@@ -14,7 +14,7 @@ function* loginSaga(action) {
   } catch (ex) {
     yield put({ type: actionTypes.LOGIN_USER_FAILURE, payload: ex });
   }
-  yield put({ type: actionTypes.GET_CURRENT_USER });
+  yield call(getCurrentUserSaga);
 }
 
 function* registerUserSaga(action) {
@@ -23,6 +23,10 @@ function* registerUserSaga(action) {
   } catch (ex) {
     yield put({ type: actionTypes.REGISTER_FAILURE, payload: ex });
   }
+  yield call(loginSaga, {
+    payload: { username: action.payload.email, password: action.payload.password }
+  });
+  yield put({ type: actionTypes.POST_DEFAULT_SETTINGS });
 }
 
 function* getCurrentUserSaga() {
@@ -34,6 +38,7 @@ function* getCurrentUserSaga() {
       type: actionTypes.GET_CURRENT_USER_SUCCESS,
       payload: { user, jwt }
     });
+    yield put({ type: actionTypes.GET_SETTINGS });
   } catch (ex) {
     yield put({
       type: actionTypes.GET_CURRENT_USER_FAILURE

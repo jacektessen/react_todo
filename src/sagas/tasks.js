@@ -1,6 +1,6 @@
 import _ from "lodash";
 import http from "../services/tasksHttpService";
-import { put, call, takeEvery, select } from "redux-saga/effects";
+import { put, call, takeEvery, select, fork } from "redux-saga/effects";
 import * as actionTypes from "../actions/actionTypes";
 
 import getTasksFromColumns from "../reducers/tasks/getTasksFromColumns";
@@ -19,9 +19,7 @@ function* postUpdatedTasksSaga(action) {
   const newTasks = yield call(getTasksFromColumns, action.payload);
   yield put({ type: actionTypes.POST_UPDATED_STORE, payload: action.payload });
   for (let i of _.range(newTasks.length)) {
-    if (
-      JSON.stringify(newTasks[i]) !== JSON.stringify(prevData.tasks.tasks[i])
-    ) {
+    if (JSON.stringify(newTasks[i]) !== JSON.stringify(prevData.tasks.tasks[i])) {
       const task = yield {
         name: newTasks[i].name,
         content: newTasks[i].content,
@@ -29,7 +27,6 @@ function* postUpdatedTasksSaga(action) {
         order_no: newTasks[i].order_no
       };
       try {
-        yield put({ type: "UPDATE_TASK", payload: task });
         yield call(http.put, newTasks[i].id, task);
       } catch (ex) {
         yield put({ type: actionTypes.POST_TASK_FAILURE, payload: ex });

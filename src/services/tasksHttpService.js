@@ -1,6 +1,5 @@
 import axios from "axios";
 import { apiUrl } from "../config.json";
-import { connect } from "react-redux";
 
 const apiEndpointV1 = apiUrl + "/v1/tasks/";
 const apiEndpointV2 = apiUrl + "/v2/tasks/";
