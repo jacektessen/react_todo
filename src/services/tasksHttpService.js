@@ -20,7 +20,6 @@ async function putTask(taskID, task) {
 }
 
 async function postTask(task) {
-  console.log("post task - data", task);
   return axios.post(apiEndpointV1, task);
 }
 

@@ -89,11 +89,8 @@ class Dashboard extends Component {
       return (
         <div className="loader-gif">
           <img src="img/loader2.gif" height="" width="" />
-          {/* <img src="img/bird_loader.gif" /> */}
-          {/* <h1>Starting...........</h1> */}
         </div>
       );
-    // if (this.props.tasks.loading) return <h1>Loading.................</h1>;
     return (
       <React.Fragment>
         <div className="dashboard_whole">

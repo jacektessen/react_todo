@@ -5,15 +5,6 @@ import Task from "../task";
 import { getSettingsPage } from "../../actions/settingsPage";
 import { connect } from "react-redux";
 
-// export const theme = {
-//   background: {
-//     column1: "#ffcc80",
-//     column2: "#fff176",
-//     column3: "#ffeef2",
-//     column4: "lightGreen"
-//   }
-// };
-
 export const Container = styled.div`
   margin: 8px;
   border-radius: 2px;
@@ -25,19 +16,20 @@ export const Container = styled.div`
   }
   width: 600px;
   ${props =>
-    props.column &&
+    // props.column &&
     css`
       background: ${props => props.theme.background[props.column]};
-
-      /* clear: ${props => (props.column === "column4" ? "both" : null)}; */
-      /* width: ${props => (props.column === "column4" ? "50%" : null)};
-      vertical-align: ${props => (props.column === "column4" ? "bottom" : null)}; */
     `}
   display: flex;
   flex-direction: column;
-  -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.52);
-  -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.52);
-  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.52);
+  ${props =>
+    !props.shadow
+      ? null
+      : css`
+          -webkit-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
+          -moz-box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
+          box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.5);
+        `}
 `;
 
 export const Title = styled.h3`
@@ -59,22 +51,32 @@ class Column extends React.Component {
     if (!settings) return null;
     const theme = {
       background: {
-        column1: settings.panel_1,
-        column2: settings.panel_2,
-        column3: settings.panel_3,
-        column4: settings.panel_4
+        column1: settings.panel_1_color,
+        column2: settings.panel_2_color,
+        column3: settings.panel_3_color,
+        column4: settings.panel_4_color
       }
+    };
+    const title = {
+      column1: settings.panel_1_name,
+      column2: settings.panel_2_name,
+      column3: settings.panel_3_name,
+      column4: settings.panel_4_name
     };
     return (
       <ThemeProvider theme={theme}>
-        {/* <ThemeProvider theme={this.state.theme}> */}
-        <Container column={this.props.column.id}>
-          <Title>{this.props.column.title}</Title>
+        <Container column={this.props.column.id} shadow={settings.shadow_effect}>
+          <Title>{title[this.props.column.id]}</Title>
           <Droppable droppableId={this.props.column.id}>
             {provided => (
               <TaskList ref={provided.innerRef} {...provided.droppableProps}>
                 {this.props.tasks.map((task, index) => (
-                  <Task key={task.id} task={task} index={index} />
+                  <Task
+                    key={task.id}
+                    task={task}
+                    index={index}
+                    shadow={settings.shadow_effect}
+                  />
                 ))}
               </TaskList>
             )}

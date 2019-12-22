@@ -7,7 +7,7 @@ function* getSettingsSaga() {
     const settings = yield call(http.get);
     yield put({ type: actionTypes.GET_SETTINGS_SUCCESS, payload: settings });
   } catch (ex) {
-    yield put({ type: actionTypes.GET_SETTINGS_FAILURE, payload: ex });
+    // yield put({ type: actionTypes.GET_SETTINGS_FAILURE, payload: ex });
   }
 }
 

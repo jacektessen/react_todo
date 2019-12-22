@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
 import { handleDeleteTask } from "../actions/tasks";
 import { showModal } from "../actions/modal";
@@ -10,14 +10,19 @@ const Container = styled.div`
   border-radius: 2px;
   padding: 8px;
   margin-bottom: 8px;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.8);
   position: flex;
   &:hover {
     background-color: rgba(255, 236, 236, 0.6);
   }
-  -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
-  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+  ${props =>
+    !props.shadow
+      ? null
+      : css`
+          -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+          -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+          box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+        `}
 `;
 
 class Task extends Component {
@@ -36,7 +41,8 @@ class Task extends Component {
               <Container
                 {...provided.draggableProps}
                 {...provided.dragHandleProps}
-                ref={provided.innerRef}>
+                ref={provided.innerRef}
+                shadow={this.props.shadow}>
                 {this.props.task.name}
                 <button onClick={this.handleDelete} className="delete-button-tasks">
                   <i className="fa fa-trash-o fa-lg" aria-hidden="true"></i>
