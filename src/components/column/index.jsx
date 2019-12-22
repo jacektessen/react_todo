@@ -16,7 +16,6 @@ import { connect } from "react-redux";
 
 export const Container = styled.div`
   margin: 8px;
-  border: 1px solid lightgrey;
   border-radius: 2px;
   @media (min-width: 950px) {
     width: 48%;
@@ -36,6 +35,9 @@ export const Container = styled.div`
     `}
   display: flex;
   flex-direction: column;
+  -webkit-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.52);
+  -moz-box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.52);
+  box-shadow: 5px 5px 5px 0px rgba(0, 0, 0, 0.52);
 `;
 
 export const Title = styled.h3`

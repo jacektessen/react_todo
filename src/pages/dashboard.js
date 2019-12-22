@@ -92,7 +92,9 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="dashboard_whole">
           <div className="row d-flex justify-content-center">
-            <button className="btn btn-success mt-2" onClick={() => this.props.showModal()}>
+            <button
+              className="btn btn-success mt-2 btn-add-dashboard"
+              onClick={() => this.props.showModal()}>
               + Add a new task
             </button>
           </div>

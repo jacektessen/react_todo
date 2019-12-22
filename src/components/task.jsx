@@ -15,6 +15,9 @@ const Container = styled.div`
   &:hover {
     background-color: rgba(255, 236, 236, 0.6);
   }
+  -webkit-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.5);
 `;
 
 class Task extends Component {

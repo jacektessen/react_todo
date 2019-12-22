@@ -1,3 +1,7 @@
+# ToDo App | author: Jacek Tessen-Węsierski
+website: https://react-todo-jt.herokuapp.com/
+<hr />
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

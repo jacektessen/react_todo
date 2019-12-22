@@ -2,6 +2,8 @@
   float: right;
   background-color: rgba(0, 0, 0, 0);
   border: none;
+  padding: 0;
+  margin-right: 7px;
 }
 
 .delete-button-tasks {
@@ -9,11 +11,18 @@
   background-color: rgba(0, 0, 0, 0);
   border: none;
   color: red;
+  padding: 0;
 }
 
 .fa-plus-circle {
   cursor: pointer;
   color: green;
+}
+
+.btn-add-dashboard {
+  -webkit-box-shadow: 2px 1px 5px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 2px 1px 5px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 2px 1px 5px 0px rgba(0, 0, 0, 0.5);
 }
 
 @media (max-width: 1400px) and (min-width: 950px) {
@@ -60,8 +69,13 @@
   width: 320px;
 }
 
+.register-form {
+  width: 320px;
+}
+
 .navbar {
   width: 100%;
+  max-width: 1400px;
 }
 
 /* modal */

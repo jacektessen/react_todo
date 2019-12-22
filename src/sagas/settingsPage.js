@@ -1,4 +1,4 @@
-import { put, call, takeEvery, select } from "redux-saga/effects";
+import { put, call, takeEvery, select, delay } from "redux-saga/effects";
 import http from "../services/settingsHttpService";
 import * as actionTypes from "../actions/actionTypes";
 
@@ -27,6 +27,7 @@ function* postDefaultSettings() {
   } catch (ex) {
     yield put({ type: actionTypes.POST_DEFAULT_SETTINGS_FAILURE, payload: ex });
   }
+  yield delay(3000);
   yield call(getSettingsSaga);
 }
 
