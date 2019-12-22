@@ -78,6 +78,14 @@
   max-width: 1400px;
 }
 
+.loader-gif {
+  color: blue;
+  margin-top: 180px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
 /* modal */
 body {
   margin: 0;

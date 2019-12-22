@@ -21,7 +21,9 @@ class TaskForm extends Form {
     column: Joi.string()
       .required()
       .label("Column"),
-    content: Joi.string().label("Content"),
+    content: Joi.string()
+      .label("Content")
+      .allow(""),
     name: Joi.string()
       .required()
       .label("Name")

@@ -85,9 +85,15 @@ class Dashboard extends Component {
 
   render() {
     console.log("props w dashboard", this.props.tasks);
-    if (!this.props.tasks.loaded && !this.props.tasks.loading)
-      return <h1>Starting...........</h1>;
-    if (this.props.tasks.loading) return <h1>Loading.................</h1>;
+    if ((!this.props.tasks.loaded && !this.props.tasks.loading) || this.props.tasks.loading)
+      return (
+        <div className="loader-gif">
+          <img src="img/loader2.gif" height="" width="" />
+          {/* <img src="img/bird_loader.gif" /> */}
+          {/* <h1>Starting...........</h1> */}
+        </div>
+      );
+    // if (this.props.tasks.loading) return <h1>Loading.................</h1>;
     return (
       <React.Fragment>
         <div className="dashboard_whole">
