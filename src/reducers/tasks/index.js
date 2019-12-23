@@ -8,7 +8,7 @@ const getTasksApiSuccess = (state, tasks) => {
     columns,
     tasks,
     loading: false,
-    loaded: true,
+    // loaded: true,
     error: null
   };
 };
@@ -27,7 +27,7 @@ const deleteTaskFailure = (state, error) => {
 export const initState = {
   tasks: [],
   loading: false,
-  loaded: false,
+  // loaded: false,
   error: null,
   columns: { 
     column1: { id: "column1", title: "Important", taskIds: [] }, 
@@ -46,7 +46,7 @@ const reducerTasks = (state = initState, action) => {
     case actionTypes.GET_TASKS_API_SUCCESS: 
       return getTasksApiSuccess(state, action.payload);
     case actionTypes.GET_TASKS_API_FAILURE: 
-      return { ...state, loading: false, loaded: true, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     case actionTypes.POST_UPDATED_STORE: return action.payload;
     case actionTypes.POST_TASK_FAILURE: return postTaskFailure(state, action.payload);
     case actionTypes.DELETE_TASK_FAILURE: return deleteTaskFailure(state, action.payload);

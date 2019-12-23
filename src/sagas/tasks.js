@@ -6,6 +6,7 @@ import * as actionTypes from "../actions/actionTypes";
 import getTasksFromColumns from "../reducers/tasks/getTasksFromColumns";
 
 function* getTasksApiSaga() {
+  yield put({ type: actionTypes.GET_TASKS_API_LOAD });
   try {
     const tasks = yield call(http.get);
     yield put({ type: actionTypes.GET_TASKS_API_SUCCESS, payload: tasks });

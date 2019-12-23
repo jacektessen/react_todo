@@ -4,6 +4,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import Column from "../components/column";
 import TaskForm from "../components/taskForm";
 import Modal from "../components/common/modal/modal";
+import Loader from "../components/common/loader";
 import { connect } from "react-redux";
 import { handleGetTasks, handleChangeTasks } from "../actions/tasks";
 import { showModal } from "../actions/modal";
@@ -85,12 +86,7 @@ class Dashboard extends Component {
 
   render() {
     console.log("props w dashboard", this.props);
-    if ((!this.props.tasks.loaded && !this.props.tasks.loading) || this.props.tasks.loading)
-      return (
-        <div className="loader-gif">
-          <img src="img/loader2.gif" height="" width="" />
-        </div>
-      );
+    if (this.props.tasks.loading) return <Loader />;
     return (
       <React.Fragment>
         <div className="dashboard_whole">

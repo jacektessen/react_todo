@@ -5,6 +5,7 @@ import * as actionTypes from "../actions/actionTypes";
 
 function* loginSaga(action) {
   try {
+    yield put({ type: actionTypes.LOGIN_USER_LOAD });
     const jwt = yield call(http.postLogin, {
       email: action.payload.username,
       password: action.payload.password
@@ -41,7 +42,8 @@ function* getCurrentUserSaga() {
     yield put({ type: actionTypes.GET_SETTINGS });
   } catch (ex) {
     yield put({
-      type: actionTypes.GET_CURRENT_USER_FAILURE
+      type: actionTypes.GET_CURRENT_USER_FAILURE,
+      payload: ex
     });
   }
 }

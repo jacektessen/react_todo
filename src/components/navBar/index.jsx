@@ -46,4 +46,4 @@ export const NavBar = ({ user }) => {
   );
 };
 
-export default connect(state => ({ user: state.currentUser }), null)(NavBar);
+export default connect(state => ({ user: state.currentUser.user }), null)(NavBar);

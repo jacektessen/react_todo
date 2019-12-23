@@ -53,6 +53,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default connect(
-  state => ({ user: state.currentUser }),
+  state => ({ user: state.currentUser.user, user_loading: state.currentUser.loading }),
   mapDispatchToProps
 )(withRouter(App));

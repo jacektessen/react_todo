@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/form";
+import Loader from "../components/common/loader";
 import { connect } from "react-redux";
 import { login } from "../actions/user";
 
@@ -27,6 +28,7 @@ class LoginForm extends Form {
 
   render() {
     // prettier-ignore
+    if (this.props.user_loading) return <Loader />;
     return (
       <div className="login-form">
         <h1>Login</h1>
@@ -35,11 +37,12 @@ class LoginForm extends Form {
           {this.renderInput("password", "Password", "password")}
           {this.renderButton("Login")}
         </form>
-        
+
         <div className="login_demo_data">
           <p>
             You can use the following data: <br />
-            Username: user-demo@gmail.com<br />
+            Username: user-demo@gmail.com
+            <br />
             Password: 123456
           </p>
         </div>
