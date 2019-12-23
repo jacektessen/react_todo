@@ -22,17 +22,18 @@ export class App extends Component {
   }
   // prettier-ignore
   render() {
-    console.log("props in App", this.props);
+    const {props} = this;
+    console.log("props in App", props);
     if (!this.state.currentUserIsMounted) return null;
     return (
-      <div className={this.props.location.pathname === "/dashboard" ? "app-dashboard" : "app"}>
+      <div className={props.location.pathname === "/dashboard" ? "app-dashboard" : "app"}>
       <NavBar />
       <ToastContainer />
       <Switch>
-      <Route path="/login" exact render={() => this.props.user ? <Redirect to="/dashboard" /> : <LoginForm /> }/>
-      <Route path="/register" exact render={() => this.props.user ? <Redirect to="/dashboard" /> : <RegisterForm /> } />
-      <Route path="/dashboard" exact render={() => !this.props.user ? <Redirect to="/login" /> : <Dashboard /> } />
-      <Route path="/settings" exact render={() => !this.props.user ? <Redirect to="/login" /> : <SettingsPage /> } />
+      <Route path="/login" exact render={() => props.user ? <Redirect to="/dashboard" /> : <LoginForm {...props} /> }/>
+      <Route path="/register" exact render={() => props.user ? <Redirect to="/dashboard" /> : <RegisterForm {...props} /> } />
+      <Route path="/dashboard" exact render={() => !props.user ? <Redirect to="/login" /> : <Dashboard {...props} /> } />
+      <Route path="/settings" exact render={() => !props.user ? <Redirect to="/login" /> : <SettingsPage  {...props}/> } />
       <Route path="/logout" exact component={Logout} />
       <Route path="/tasks/add" exact component={TaskForm} />
       <Route path="/tasks/:code" exact component={TaskForm} />

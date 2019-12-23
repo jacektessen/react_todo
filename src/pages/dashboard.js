@@ -4,10 +4,10 @@ import { DragDropContext } from "react-beautiful-dnd";
 import Column from "../components/column";
 import TaskForm from "../components/taskForm";
 import Modal from "../components/common/modal/modal";
+import { connect } from "react-redux";
 import { handleGetTasks, handleChangeTasks } from "../actions/tasks";
 import { showModal } from "../actions/modal";
 import { getCurrentUser } from "../actions/user";
-import { connect } from "react-redux";
 
 const Container = styled.div`
   display: flex;
@@ -84,7 +84,7 @@ class Dashboard extends Component {
   };
 
   render() {
-    console.log("props w dashboard", this.props.tasks);
+    console.log("props w dashboard", this.props);
     if ((!this.props.tasks.loaded && !this.props.tasks.loading) || this.props.tasks.loading)
       return (
         <div className="loader-gif">

@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import styled, { css } from "styled-components";
 import { Draggable } from "react-beautiful-dnd";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
+import { connect } from "react-redux";
 import { handleDeleteTask } from "../actions/tasks";
 import { showModal } from "../actions/modal";
-import { connect } from "react-redux";
 
 const Container = styled.div`
   border: 1px solid lightgrey;
@@ -26,6 +28,21 @@ const Container = styled.div`
 `;
 
 class Task extends Component {
+  confirmDelete = () => {
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to delete this task?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: this.handleDelete
+        },
+        {
+          label: "No"
+        }
+      ]
+    });
+  };
   handleDelete = () => {
     this.props.handleDeleteTask(this.props.task.id);
   };
@@ -44,7 +61,7 @@ class Task extends Component {
                 ref={provided.innerRef}
                 shadow={this.props.shadow}>
                 {this.props.task.name}
-                <button onClick={this.handleDelete} className="delete-button-tasks">
+                <button onClick={this.confirmDelete} className="delete-button-tasks">
                   <i className="fa fa-trash-o fa-lg" aria-hidden="true"></i>
                 </button>
                 <button className="edit-button-tasks" onClick={this.renderModal}>

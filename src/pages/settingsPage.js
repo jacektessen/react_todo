@@ -58,8 +58,10 @@ class SettingsPage extends Component {
     }
   }
 
-  handleSaveSettings = () => {
-    this.props.updateSettingsPage(this.state.data);
+  handleSaveSettings = async () => {
+    await this.props.updateSettingsPage(this.state.data);
+    console.log("this.props.history", this.props);
+    this.props.history.push("/dashboard");
   };
 
   inputForm = (name, label, value, type) => {
@@ -106,7 +108,7 @@ class SettingsPage extends Component {
 
   render() {
     // console.log("state in settigs", this.state);
-    // console.log("props ind settings", this.props);
+    console.log("props ind settings", this.props);
     const { data } = this.state;
     return (
       <div>
