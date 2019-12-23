@@ -86,7 +86,7 @@ class Dashboard extends Component {
 
   render() {
     console.log("props w dashboard", this.props);
-    if (this.props.tasks.loading) return <Loader />;
+    // if (this.props.tasks.loading) return <Loader />;
     return (
       <React.Fragment>
         <div className="dashboard_whole">
