@@ -27,6 +27,7 @@ function* postDefaultSettings() {
   } catch (ex) {
     yield put({ type: actionTypes.POST_DEFAULT_SETTINGS_FAILURE, payload: ex });
   }
+  yield delay(1000);
   yield call(getSettingsSaga);
   yield put({ type: actionTypes.REGISTER_USER_SUCCESS });
 }
