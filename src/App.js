@@ -31,7 +31,7 @@ export class App extends Component {
       <ToastContainer />
       <Switch>
       <Route path="/login" exact render={() => props.user ? <Redirect to="/dashboard" /> : <LoginForm {...props} /> }/>
-      <Route path="/register" exact render={() => props.user ? <Redirect to="/dashboard" /> : <RegisterForm {...props} /> } />
+      <Route path="/register" exact render={() => props.user && props.settingsPage ? <Redirect to="/dashboard" /> : <RegisterForm {...props} /> } />
       <Route path="/dashboard" exact render={() => !props.user ? <Redirect to="/login" /> : <Dashboard {...props} /> } />
       <Route path="/settings" exact render={() => !props.user ? <Redirect to="/login" /> : <SettingsPage  {...props}/> } />
       <Route path="/logout" exact component={Logout} />
@@ -46,13 +46,19 @@ export class App extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.currentUser.user,
+    userLoading: state.currentUser.loadingLogin,
+    loadingRegister: state.currentUser.loadingRegister,
+    settingsPage: state.settingsPage
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
     getCurrentUser: () => dispatch(getCurrentUser())
   };
 };
 
-export default connect(
-  state => ({ user: state.currentUser.user, user_loading: state.currentUser.loading }),
-  mapDispatchToProps
-)(withRouter(App));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(App));

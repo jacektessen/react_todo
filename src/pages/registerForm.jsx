@@ -1,6 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "../components/common/form";
+import Loader from "../components/common/loader";
 import { register } from "../actions/user";
 import { connect } from "react-redux";
 
@@ -37,6 +38,7 @@ class RegisterForm extends Form {
   };
 
   render() {
+    if (this.props.loadingRegister || this.props.userLoading) return <Loader />;
     return (
       <div className="register-form">
         <h1>Register</h1>

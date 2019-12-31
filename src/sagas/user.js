@@ -19,10 +19,11 @@ function* loginSaga(action) {
 }
 
 function* registerUserSaga(action) {
+  yield put({ type: actionTypes.REGISTER_USER_LOAD });
   try {
     yield call(http.postRegister, action.payload);
   } catch (ex) {
-    yield put({ type: actionTypes.REGISTER_FAILURE, payload: ex });
+    yield put({ type: actionTypes.REGISTER_USER_FAILURE, payload: ex });
   }
   yield call(loginSaga, {
     payload: { username: action.payload.email, password: action.payload.password }
@@ -39,7 +40,7 @@ function* getCurrentUserSaga() {
       type: actionTypes.GET_CURRENT_USER_SUCCESS,
       payload: { user, jwt }
     });
-    yield put({ type: actionTypes.GET_SETTINGS });
+    // yield put({ type: actionTypes.GET_SETTINGS });
   } catch (ex) {
     yield put({
       type: actionTypes.GET_CURRENT_USER_FAILURE,

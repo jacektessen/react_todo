@@ -7,7 +7,7 @@ function* getSettingsSaga() {
     const settings = yield call(http.get);
     yield put({ type: actionTypes.GET_SETTINGS_SUCCESS, payload: settings });
   } catch (ex) {
-    // yield put({ type: actionTypes.GET_SETTINGS_FAILURE, payload: ex });
+    yield put({ type: actionTypes.GET_SETTINGS_FAILURE, payload: ex });
   }
 }
 
@@ -27,8 +27,8 @@ function* postDefaultSettings() {
   } catch (ex) {
     yield put({ type: actionTypes.POST_DEFAULT_SETTINGS_FAILURE, payload: ex });
   }
-  yield delay(3000);
   yield call(getSettingsSaga);
+  yield put({ type: actionTypes.REGISTER_USER_SUCCESS });
 }
 
 export default function* watchSettings() {

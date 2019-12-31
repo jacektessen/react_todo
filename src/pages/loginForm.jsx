@@ -28,7 +28,7 @@ class LoginForm extends Form {
 
   render() {
     // prettier-ignore
-    if (this.props.user_loading) return <Loader />;
+    if (this.props.userLoading) return <Loader />;
     return (
       <div className="login-form">
         <h1>Login</h1>
